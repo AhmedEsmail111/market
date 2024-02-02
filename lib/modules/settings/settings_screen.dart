@@ -17,7 +17,7 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).bottomNavigationBarTheme.backgroundColor ==
-        darKBackground;
+        AppColors.darKBackground;
     final locale = AppLocalizations.of(context)!;
     // ProfileCubit.get(context)
     //     .getIdentityUser(token: CacheHelper.getData(key: AppConstant.token));
@@ -90,7 +90,7 @@ class SettingsScreen extends StatelessWidget {
                     ),
 
                     Text(
-                      CacheHelper.getData(key: userName),
+                      CacheHelper.getData(key: AppConstants.userName),
                       style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                             fontWeight: FontWeight.w400,
                           ),
@@ -100,7 +100,7 @@ class SettingsScreen extends StatelessWidget {
                     ),
 
                     Text(
-                      CacheHelper.getData(key: userEmail),
+                      CacheHelper.getData(key: AppConstants.userEmail),
                       style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                           fontWeight: FontWeight.w400,
                           fontSize: 12.sp,
@@ -121,10 +121,10 @@ class SettingsScreen extends StatelessWidget {
                     ),
                     // if (profileCubit.hasAccount)
                     Card(
-                      color: isDark ? blackColor : Colors.white,
+                      color: isDark ? AppColors.blackColor : Colors.white,
                       child: Container(
                         decoration: BoxDecoration(
-                            color: isDark ? blackColor : Colors.white,
+                            color: isDark ? AppColors.blackColor : Colors.white,
                             borderRadius: BorderRadius.circular(14)),
                         child: BuildSettingsTile(
                           icon: Icons.logout,

@@ -15,7 +15,7 @@ class BuildBackButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).bottomNavigationBarTheme.backgroundColor ==
-        darKBackground;
+        AppColors.darKBackground;
     return Container(
       margin: hasBackground ? EdgeInsets.symmetric(vertical: 16.h) : null,
       decoration: BoxDecoration(

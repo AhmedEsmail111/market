@@ -28,7 +28,7 @@ class ShopLayout extends StatelessWidget {
     AddressesCubit.get(context).getAddresses();
     CartCubit.get(context).getCart();
 
-    print(CacheHelper.getData(key: token));
+    print(CacheHelper.getData(key: AppConstants.token));
     return BlocConsumer<HomeCubit, HomeStates>(
       listener: (context, state) {},
       builder: (context, state) {

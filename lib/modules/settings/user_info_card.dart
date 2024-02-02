@@ -15,16 +15,16 @@ class BuildUserInfoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).bottomNavigationBarTheme.backgroundColor ==
-        darKBackground;
+        AppColors.darKBackground;
     final locale = AppLocalizations.of(context)!;
     return Card(
-      color: isDark ? blackColor : Colors.white,
+      color: isDark ? AppColors.blackColor : Colors.white,
       child: Container(
         width: double.infinity,
         padding: EdgeInsets.all(8.w),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(14),
-          color: isDark ? blackColor : Colors.white,
+          color: isDark ? AppColors.blackColor : Colors.white,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,

@@ -19,7 +19,7 @@ class ChangeLanguageScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).bottomNavigationBarTheme.backgroundColor ==
-        darKBackground;
+        AppColors.darKBackground;
     final locale = AppLocalizations.of(context);
     return BlocConsumer<ShopCubit, ShopStates>(
       listener: (ctx, state) {},
@@ -29,7 +29,9 @@ class ChangeLanguageScreen extends StatelessWidget {
         return PopScope(
           onPopInvoked: (_) async {
             languageCubit.arabicStatus =
-                CacheHelper.getData(key: languageKey) == 'ar' ? true : false;
+                CacheHelper.getData(key: AppConstants.languageKey) == 'ar'
+                    ? true
+                    : false;
             languageCubit.englishStatus = !languageCubit.arabicStatus;
           },
           child: Scaffold(
@@ -47,9 +49,9 @@ class ChangeLanguageScreen extends StatelessWidget {
                   Material(
                     elevation: 1,
                     shape: RoundedRectangleBorder(
-                        side: const BorderSide(color: borderColor),
+                        side: const BorderSide(color: AppColors.borderColor),
                         borderRadius: BorderRadius.circular(14)),
-                    color: isDark ? blackColor : Colors.white,
+                    color: isDark ? AppColors.blackColor : Colors.white,
                     child: Padding(
                       padding: EdgeInsets.all(8.w),
                       child: Column(

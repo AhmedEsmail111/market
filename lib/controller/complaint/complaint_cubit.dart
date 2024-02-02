@@ -19,13 +19,13 @@ class ComplaintCubit extends Cubit<ComplaintStates> {
       emit(AddComplaintLoadingState());
 
       final response = await DioHelper.postData(
-          url: addComplaintsEndPoint,
+          url: ApiConstants.addComplaintsEndPoint,
           // token: userToken,
-          lang: CacheHelper.getData(key: languageKey) ?? 'en',
+          lang: CacheHelper.getData(key: AppConstants.languageKey) ?? 'en',
           data: {
-            "name": CacheHelper.getData(key: userName),
-            "phone": CacheHelper.getData(key: userPhone),
-            "email": CacheHelper.getData(key: userEmail),
+            "name": CacheHelper.getData(key: AppConstants.userName),
+            "phone": CacheHelper.getData(key: AppConstants.userPhone),
+            "email": CacheHelper.getData(key: AppConstants.userEmail),
             "message": complaint
           });
       // print(response.data);

@@ -26,9 +26,10 @@ class ReportProblemScreen extends StatelessWidget {
         listener: (context, state) {
           if (state is AddComplaintSuccessState) {
             buildToastMessage(
-              message: CacheHelper.getData(key: languageKey) == 'ar'
-                  ? 'شكرا لمساعدتنا عل جعل الماركت مكانا امنا'
-                  : 'Thanks for helping us mak Market a safe place',
+              message:
+                  CacheHelper.getData(key: AppConstants.languageKey) == 'ar'
+                      ? 'شكرا لمساعدتنا عل جعل الماركت مكانا امنا'
+                      : 'Thanks for helping us mak Market a safe place',
               gravity: ToastGravity.BOTTOM,
               textColor: Theme.of(context).colorScheme.onSecondary,
               background:
@@ -74,7 +75,9 @@ class ReportProblemScreen extends StatelessWidget {
                         maxLines: 3,
                         onValidate: (value) {
                           if (value == null || value.trim().isEmpty) {
-                            return CacheHelper.getData(key: languageKey) == 'ar'
+                            return CacheHelper.getData(
+                                        key: AppConstants.languageKey) ==
+                                    'ar'
                                 ? 'أدخل المشكلة من فضلك'
                                 : 'please enter your Compliant';
                           }

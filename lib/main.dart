@@ -65,8 +65,9 @@ class MyApp extends StatelessWidget {
         minTextAdapt: true,
         splitScreenMode: true,
         builder: (_, child) {
-          final isBoardingDone = CacheHelper.getData(key: isBoarding) ?? false;
-          final userToken = CacheHelper.getData(key: token);
+          final isBoardingDone =
+              CacheHelper.getData(key: AppConstants.isBoarding) ?? false;
+          final userToken = CacheHelper.getData(key: AppConstants.token);
           return BlocBuilder<ShopCubit, ShopStates>(
             builder: (context, state) {
               final cubit = ShopCubit.get(context);
@@ -123,7 +124,7 @@ class MyApp extends StatelessWidget {
                 ),
                 darkTheme: ThemeData(
                   appBarTheme: AppBarTheme(
-                    backgroundColor: darKBackground,
+                    backgroundColor: AppColors.darKBackground,
                     titleTextStyle: const TextStyle().copyWith(
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
@@ -137,9 +138,9 @@ class MyApp extends StatelessWidget {
                     seedColor: const Color.fromARGB(255, 25, 1, 66),
                     // brightness: Brightness.dark,
                   ),
-                  scaffoldBackgroundColor: darKBackground,
+                  scaffoldBackgroundColor: AppColors.darKBackground,
                   bottomNavigationBarTheme: BottomNavigationBarThemeData(
-                    backgroundColor: darKBackground,
+                    backgroundColor: AppColors.darKBackground,
                     unselectedItemColor:
                         const Color.fromARGB(255, 192, 187, 187),
                     selectedLabelStyle: const TextStyle().copyWith(

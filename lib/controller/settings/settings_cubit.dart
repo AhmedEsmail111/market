@@ -24,7 +24,7 @@ class SettingsCubit extends Cubit<SettingsStates> {
     //   print('no bucket associated with');
     // }
     // await TLocaleStorage.instance().removeData(CacheHelper.getData(key: 'id'));
-    CacheHelper.removeData(key: token);
+    CacheHelper.removeData(key: AppConstants.token);
     Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
@@ -37,13 +37,13 @@ class SettingsCubit extends Cubit<SettingsStates> {
 
   void getUser() async {
     try {
-      final userToken = CacheHelper.getData(key: token);
+      final userToken = CacheHelper.getData(key: AppConstants.token);
       emit(GetProfileLoadingState());
 
       final response = await DioHelper.getData(
-        url: getProfileEndPoint,
+        url: ApiConstants.getProfileEndPoint,
         token: userToken,
-        lang: CacheHelper.getData(key: languageKey) ?? 'en',
+        lang: CacheHelper.getData(key: AppConstants.languageKey) ?? 'en',
       );
 
       if (response.data['status'] == true) {
@@ -67,13 +67,13 @@ class SettingsCubit extends Cubit<SettingsStates> {
     required String password,
   }) async {
     try {
-      final userToken = CacheHelper.getData(key: token);
+      final userToken = CacheHelper.getData(key: AppConstants.token);
       emit(UpdateUserLoadingState());
 
       final response = await DioHelper.putData(
-        url: updateProfileEndPoint,
+        url: ApiConstants.updateProfileEndPoint,
         token: userToken,
-        lang: CacheHelper.getData(key: languageKey) ?? 'en',
+        lang: CacheHelper.getData(key: AppConstants.languageKey) ?? 'en',
         data: {
           "name": name,
           "phone": phone,
@@ -84,10 +84,13 @@ class SettingsCubit extends Cubit<SettingsStates> {
 
       if (response.data['status'] == true) {
         userModel = LoginModel.fromJson(response.data);
-        CacheHelper.saveData(key: userName, value: userModel!.data!.name);
-        CacheHelper.saveData(key: userEmail, value: userModel!.data!.email);
+        CacheHelper.saveData(
+            key: AppConstants.userName, value: userModel!.data!.name);
+        CacheHelper.saveData(
+            key: AppConstants.userEmail, value: userModel!.data!.email);
 
-        CacheHelper.saveData(key: userPhone, value: userModel!.data!.phone);
+        CacheHelper.saveData(
+            key: AppConstants.userPhone, value: userModel!.data!.phone);
 
         print('${userModel!.data!.name} is the current user ');
         emit(UpdateUserSuccessState());
@@ -105,13 +108,13 @@ class SettingsCubit extends Cubit<SettingsStates> {
     required String newPassword,
   }) async {
     try {
-      final userToken = CacheHelper.getData(key: token);
+      final userToken = CacheHelper.getData(key: AppConstants.token);
       emit(UpdateUserPasswordLoadingState());
 
       final response = await DioHelper.postData(
-        url: changePasswordEndPoint,
+        url: ApiConstants.changePasswordEndPoint,
         token: userToken,
-        lang: CacheHelper.getData(key: languageKey) ?? 'en',
+        lang: CacheHelper.getData(key: AppConstants.languageKey) ?? 'en',
         data: {
           "current_password": oldPassword,
           "new_password": newPassword,

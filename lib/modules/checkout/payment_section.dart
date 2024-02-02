@@ -14,7 +14,7 @@ class BuildPaymentSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).bottomNavigationBarTheme.backgroundColor ==
-        darKBackground;
+        AppColors.darKBackground;
     final locale = AppLocalizations.of(context)!;
     return BlocConsumer<CartCubit, CartStates>(
       listener: (context, state) {},

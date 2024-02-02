@@ -16,7 +16,7 @@ class BuildOrderTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).bottomNavigationBarTheme.backgroundColor ==
-        darKBackground;
+        AppColors.darKBackground;
     final locale = AppLocalizations.of(context)!;
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -24,16 +24,16 @@ class BuildOrderTile extends StatelessWidget {
         onTap: onTap,
         child: Material(
           elevation: 1,
-          shadowColor: isDark ? null : borderColor,
+          shadowColor: isDark ? null : AppColors.borderColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14.r),
             side: BorderSide(
               color: isDark
                   ? Theme.of(context).colorScheme.secondary.withOpacity(0.2)
-                  : borderColor,
+                  : AppColors.borderColor,
             ),
           ),
-          color: isDark ? blackColor : Colors.white,
+          color: isDark ? AppColors.blackColor : Colors.white,
           clipBehavior: Clip.hardEdge,
           child: Stack(
             children: [
@@ -41,7 +41,7 @@ class BuildOrderTile extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                 // margin: EdgeInsets.symmetric(horizontal: 16.w),
                 decoration: BoxDecoration(
-                  color: isDark ? blackColor : Colors.white,
+                  color: isDark ? AppColors.blackColor : Colors.white,
                   borderRadius: BorderRadius.circular(14.r),
                 ),
                 child: Column(

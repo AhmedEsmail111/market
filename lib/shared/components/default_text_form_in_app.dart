@@ -61,7 +61,7 @@ class BuildDefaultTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).bottomNavigationBarTheme.backgroundColor ==
-        darKBackground;
+        AppColors.darKBackground;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

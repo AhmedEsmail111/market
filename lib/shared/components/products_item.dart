@@ -27,7 +27,7 @@ class BuildProductsItem extends StatelessWidget {
     // // final locale = AppLocalizations.of(context);
     // final time = DateTime.now().difference(timeSince).inDays;
     final isDark = Theme.of(context).bottomNavigationBarTheme.backgroundColor ==
-        darKBackground;
+        AppColors.darKBackground;
 
     return GestureDetector(
       onTap: () {
@@ -38,18 +38,18 @@ class BuildProductsItem extends StatelessWidget {
       },
       child: Material(
         elevation: 1,
-        shadowColor: isDark ? null : borderColor,
+        shadowColor: isDark ? null : AppColors.borderColor,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
             side: BorderSide(
                 color: isDark
                     ? Theme.of(context).colorScheme.secondary.withOpacity(0.2)
-                    : borderColor)),
-        color: isDark ? blackColor : Colors.white,
+                    : AppColors.borderColor)),
+        color: isDark ? AppColors.blackColor : Colors.white,
         child: Container(
           margin: EdgeInsets.symmetric(horizontal: 2.w),
           decoration: BoxDecoration(
-            color: isDark ? blackColor : Colors.white,
+            color: isDark ? AppColors.blackColor : Colors.white,
             borderRadius: BorderRadius.circular(8),
             // border: Border.all(
             //     color: isDark

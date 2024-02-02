@@ -87,7 +87,7 @@ class ModifyProfileScreen extends StatelessWidget {
                           aboveFieldText: locale.new_name,
                           initialFieldValue: settingsCubit.userModel != null
                               ? settingsCubit.userModel!.data!.name
-                              : CacheHelper.getData(key: userName),
+                              : CacheHelper.getData(key: AppConstants.userName),
                           inputType: TextInputType.text,
                           backGroundColor: Colors.white,
                           context: context,
@@ -114,7 +114,8 @@ class ModifyProfileScreen extends StatelessWidget {
                           aboveFieldText: locale.new_email,
                           initialFieldValue: settingsCubit.userModel != null
                               ? settingsCubit.userModel!.data!.email
-                              : CacheHelper.getData(key: userEmail),
+                              : CacheHelper.getData(
+                                  key: AppConstants.userEmail),
                           inputType: TextInputType.text,
                           backGroundColor: Colors.white,
                           context: context,
@@ -145,7 +146,8 @@ class ModifyProfileScreen extends StatelessWidget {
                           aboveFieldText: locale.new_phone,
                           initialFieldValue: settingsCubit.userModel != null
                               ? settingsCubit.userModel!.data!.phone
-                              : CacheHelper.getData(key: userPhone),
+                              : CacheHelper.getData(
+                                  key: AppConstants.userPhone),
                           backGroundColor: Colors.white,
                           maxLength: 16,
                           inputType: TextInputType.number,

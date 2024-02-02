@@ -1,12 +1,14 @@
-const onBoarding = 'assets/images/boarding.jpg';
-const onBoarding2 = 'assets/images/boarding2.jpg';
-const onBoarding3 = 'assets/images/boarding3.jpg';
-const token = 'token';
-const isBoarding = 'Boarding';
-const userName = 'user_name';
-const userEmail = 'userEmail';
-const addressId = 'addressId';
-const languageKey = 'locale';
-const userPhone = 'userPone';
-const userPassword = 'userPassword';
-const isDarkMode = 'darkMode';
+abstract class AppConstants {
+  static const onBoarding = 'assets/images/boarding.jpg';
+  static const onBoarding2 = 'assets/images/boarding2.jpg';
+  static const onBoarding3 = 'assets/images/boarding3.jpg';
+  static const token = 'token';
+  static const isBoarding = 'Boarding';
+  static const userName = 'user_name';
+  static const userEmail = 'userEmail';
+  static const addressId = 'addressId';
+  static const languageKey = 'locale';
+  static const userPhone = 'userPone';
+  static const userPassword = 'userPassword';
+  static const isDarkMode = 'darkMode';
+}

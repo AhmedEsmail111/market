@@ -16,7 +16,7 @@ class OrderDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).bottomNavigationBarTheme.backgroundColor ==
-        darKBackground;
+        AppColors.darKBackground;
     final locale = AppLocalizations.of(context)!;
     print(orderId);
     return BlocProvider(
@@ -46,9 +46,9 @@ class OrderDetailsScreen extends StatelessWidget {
                                       .colorScheme
                                       .secondary
                                       .withOpacity(0.2)
-                                  : borderColor,
+                                  : AppColors.borderColor,
                             ),
-                            color: isDark ? blackColor : Colors.white,
+                            color: isDark ? AppColors.blackColor : Colors.white,
                             borderRadius: BorderRadius.circular(14.r),
                           ),
                           child: Column(

@@ -72,13 +72,13 @@ class CartCubit extends Cubit<CartStates> {
 
   Future<void> getCart({bool isFirst = true, bool fetch = true}) async {
     try {
-      final userToken = CacheHelper.getData(key: token);
+      final userToken = CacheHelper.getData(key: AppConstants.token);
       emit(GetCartLoadingState());
 
       final response = await DioHelper.getData(
-        url: cartEndPoint,
+        url: ApiConstants.cartEndPoint,
         token: userToken,
-        lang: CacheHelper.getData(key: languageKey) ?? 'en',
+        lang: CacheHelper.getData(key: AppConstants.languageKey) ?? 'en',
       );
       // print(response.data);
       if (response.data['status'] == true) {
@@ -113,13 +113,13 @@ class CartCubit extends Cubit<CartStates> {
   Future<void> addOrRemoveFromCart(int productId) async {
     isAddRemoveDone = false;
     try {
-      final userToken = CacheHelper.getData(key: token);
+      final userToken = CacheHelper.getData(key: AppConstants.token);
       emit(ToggleProductInCartLoading());
 
       final response = await DioHelper.postData(
-        url: cartEndPoint,
+        url: ApiConstants.cartEndPoint,
         token: userToken,
-        lang: CacheHelper.getData(key: languageKey) ?? 'en',
+        lang: CacheHelper.getData(key: AppConstants.languageKey) ?? 'en',
         data: {
           "product_id": productId,
         },
@@ -159,13 +159,13 @@ class CartCubit extends Cubit<CartStates> {
     cartMap[itemId] = quantity;
     print(cartMap[itemId]);
     try {
-      final userToken = CacheHelper.getData(key: token);
+      final userToken = CacheHelper.getData(key: AppConstants.token);
       emit(ChangeQuantityInCartLoading());
 
       final response = await DioHelper.putData(
-        url: '$cartEndPoint/$itemId',
+        url: '${ApiConstants.cartEndPoint}/$itemId',
         token: userToken,
-        lang: CacheHelper.getData(key: languageKey) ?? 'en',
+        lang: CacheHelper.getData(key: AppConstants.languageKey) ?? 'en',
         data: {
           "quantity": quantity,
         },
@@ -206,13 +206,13 @@ class CartCubit extends Cubit<CartStates> {
   void removeItem(int itemId) async {
     isRemoving = true;
     try {
-      final userToken = CacheHelper.getData(key: token);
+      final userToken = CacheHelper.getData(key: AppConstants.token);
       emit(RemoveItemInCartLoading());
 
       final response = await DioHelper.deleteData(
-        url: '$cartEndPoint/$itemId',
+        url: '${ApiConstants.cartEndPoint}/$itemId',
         token: userToken,
-        lang: CacheHelper.getData(key: languageKey) ?? 'en',
+        lang: CacheHelper.getData(key: AppConstants.languageKey) ?? 'en',
       );
       // print(response.data);
       if (response.data['status'] == true) {
@@ -239,13 +239,13 @@ class CartCubit extends Cubit<CartStates> {
 
   Future<void> validatePromoCode(String code) async {
     try {
-      final userToken = CacheHelper.getData(key: token);
+      final userToken = CacheHelper.getData(key: AppConstants.token);
       emit(ValidatePromoCodeLoading());
 
       final response = await DioHelper.postData(
-        url: promoCodeEndPoint,
+        url: ApiConstants.promoCodeEndPoint,
         token: userToken,
-        lang: CacheHelper.getData(key: languageKey) ?? 'en',
+        lang: CacheHelper.getData(key: AppConstants.languageKey) ?? 'en',
         data: {
           "code": code,
         },
@@ -267,13 +267,13 @@ class CartCubit extends Cubit<CartStates> {
   void addOrder({required int paymentMethod, required int addressId}) async {
     isAddingOrder = true;
     try {
-      final userToken = CacheHelper.getData(key: token);
+      final userToken = CacheHelper.getData(key: AppConstants.token);
       emit(AddOrderLoadingState());
 
       final response = await DioHelper.postData(
-        url: orderEndPoint,
+        url: ApiConstants.orderEndPoint,
         token: userToken,
-        lang: CacheHelper.getData(key: languageKey) ?? 'en',
+        lang: CacheHelper.getData(key: AppConstants.languageKey) ?? 'en',
         data: {
           "address_id": addressId,
           "payment_method": paymentMethod,
@@ -298,13 +298,13 @@ class CartCubit extends Cubit<CartStates> {
   OrdersModel? ordersModel;
   Future<void> getOrders() async {
     try {
-      final userToken = CacheHelper.getData(key: token);
+      final userToken = CacheHelper.getData(key: AppConstants.token);
       emit(GetOrdersLoadingState());
 
       final response = await DioHelper.getData(
-        url: orderEndPoint,
+        url: ApiConstants.orderEndPoint,
         token: userToken,
-        lang: CacheHelper.getData(key: languageKey) ?? 'en',
+        lang: CacheHelper.getData(key: AppConstants.languageKey) ?? 'en',
       );
       print(response.data);
       if (response.data['status'] == true) {
@@ -323,13 +323,13 @@ class CartCubit extends Cubit<CartStates> {
   cancelOrder(int orderId, int orderIndex) async {
     isCancellingOrder = true;
     try {
-      final userToken = CacheHelper.getData(key: token);
+      final userToken = CacheHelper.getData(key: AppConstants.token);
       emit(CancelOrderLoadingState());
 
       final response = await DioHelper.getData(
-        url: '$orderEndPoint/$orderId/cancel',
+        url: '${ApiConstants.orderEndPoint}/$orderId/cancel',
         token: userToken,
-        lang: CacheHelper.getData(key: languageKey) ?? 'en',
+        lang: CacheHelper.getData(key: AppConstants.languageKey) ?? 'en',
       );
       // print(response.data);
       if (response.data['status'] == true) {
@@ -351,22 +351,22 @@ class CartCubit extends Cubit<CartStates> {
 
   List<PaymentModel> payments = [
     PaymentModel(
-        name: CacheHelper.getData(key: languageKey) == 'ar'
+        name: CacheHelper.getData(key: AppConstants.languageKey) == 'ar'
             ? 'بوابة الدفع بايبال'
             : 'Paypal',
         image: 'assets/images/paypal.jpg'),
     PaymentModel(
-        name: CacheHelper.getData(key: languageKey) == 'ar'
+        name: CacheHelper.getData(key: AppConstants.languageKey) == 'ar'
             ? 'بطاقة ماستر كارد'
             : 'Mastercard',
         image: 'assets/images/mastercard.jpg'),
     PaymentModel(
-        name: CacheHelper.getData(key: languageKey) == 'ar'
+        name: CacheHelper.getData(key: AppConstants.languageKey) == 'ar'
             ? 'بطاقة فيزا'
             : 'Visa',
         image: 'assets/images/visa.jpg'),
     PaymentModel(
-        name: CacheHelper.getData(key: languageKey) == 'a'
+        name: CacheHelper.getData(key: AppConstants.languageKey) == 'a'
             ? 'الدفع عند الإستلام'
             : 'Cash on Delivery',
         image: 'assets/images/pay.jpg'),

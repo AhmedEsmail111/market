@@ -15,13 +15,13 @@ class OrderDetailsCubit extends Cubit<OrderDetailsStates> {
   OrderDetailsModel? orderDetailsModel;
   getOrderDetails(int orderId) async {
     try {
-      final userToken = CacheHelper.getData(key: token);
+      final userToken = CacheHelper.getData(key: AppConstants.token);
       emit(GetOrderDetailsLoadingState());
 
       final response = await DioHelper.getData(
-        url: '$orderEndPoint/$orderId',
+        url: '${ApiConstants.orderEndPoint}/$orderId',
         token: userToken,
-        lang: CacheHelper.getData(key: languageKey) ?? 'en',
+        lang: CacheHelper.getData(key: AppConstants.languageKey) ?? 'en',
       );
       // print(response.data);
       if (response.data['status'] == true) {

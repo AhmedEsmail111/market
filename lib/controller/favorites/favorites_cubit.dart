@@ -40,13 +40,13 @@ class FavoritesCubit extends Cubit<FavoritesStates> {
   bool isFavorite(int productId) => favorites.containsKey(productId);
   void getFavorites({bool isFirst = true}) async {
     try {
-      final userToken = CacheHelper.getData(key: token);
+      final userToken = CacheHelper.getData(key: AppConstants.token);
       emit(GetFavoritesLoadingState());
 
       final response = await DioHelper.getData(
-        url: favoritesEndPoint,
+        url: ApiConstants.favoritesEndPoint,
         token: userToken,
-        lang: CacheHelper.getData(key: languageKey) ?? 'en',
+        lang: CacheHelper.getData(key: AppConstants.languageKey) ?? 'en',
       );
 
       if (response.data['status'] == true) {
@@ -88,13 +88,13 @@ class FavoritesCubit extends Cubit<FavoritesStates> {
     emit(ChangeFaveLocalState());
 
     try {
-      final userToken = CacheHelper.getData(key: token);
+      final userToken = CacheHelper.getData(key: AppConstants.token);
       emit(ChangeFaveLoadingState());
 
       final response = await DioHelper.postData(
-        url: favoritesEndPoint,
+        url: ApiConstants.favoritesEndPoint,
         token: userToken,
-        lang: CacheHelper.getData(key: languageKey) ?? 'en',
+        lang: CacheHelper.getData(key: AppConstants.languageKey) ?? 'en',
         query: {'product_id': productId},
       );
 

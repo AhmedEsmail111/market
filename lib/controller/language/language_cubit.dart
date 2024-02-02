@@ -11,9 +11,9 @@ class ShopCubit extends Cubit<ShopStates> {
   static ShopCubit get(context) => BlocProvider.of(context);
 
   bool arabicStatus =
-      CacheHelper.getData(key: languageKey) == 'ar' ? true : false;
+      CacheHelper.getData(key: AppConstants.languageKey) == 'ar' ? true : false;
   bool englishStatus =
-      CacheHelper.getData(key: languageKey) == 'en' ? true : false;
+      CacheHelper.getData(key: AppConstants.languageKey) == 'en' ? true : false;
 
   void changeLanguageStatus(bool status, int num) {
     if (num == 1) {
@@ -29,15 +29,18 @@ class ShopCubit extends Cubit<ShopStates> {
   }
 
   int? index;
-  Locale locale = Locale(CacheHelper.getData(key: languageKey) ?? 'en');
+  Locale locale =
+      Locale(CacheHelper.getData(key: AppConstants.languageKey) ?? 'en');
 
   Future<void> setDefaultLanguage() async {
-    if (index == 0 && CacheHelper.getData(key: languageKey) != 'en') {
-      await CacheHelper.saveData(key: languageKey, value: 'en');
+    if (index == 0 &&
+        CacheHelper.getData(key: AppConstants.languageKey) != 'en') {
+      await CacheHelper.saveData(key: AppConstants.languageKey, value: 'en');
       locale = const Locale('en');
     }
-    if (index == 1 && CacheHelper.getData(key: languageKey) != 'ar') {
-      await CacheHelper.saveData(key: languageKey, value: 'ar');
+    if (index == 1 &&
+        CacheHelper.getData(key: AppConstants.languageKey) != 'ar') {
+      await CacheHelper.saveData(key: AppConstants.languageKey, value: 'ar');
       locale = const Locale('ar');
     }
     emit(SaveDefaultLanguageStatus());
@@ -52,10 +55,10 @@ class ShopCubit extends Cubit<ShopStates> {
     emit(SuccessChangeCheckLanguageState());
   }
 
-  bool isDark = CacheHelper.getData(key: isDarkMode) ?? false;
+  bool isDark = CacheHelper.getData(key: AppConstants.isDarkMode) ?? false;
   void setDarkMode() {
     isDark = !isDark;
-    CacheHelper.saveData(key: isDarkMode, value: isDark);
+    CacheHelper.saveData(key: AppConstants.isDarkMode, value: isDark);
     emit(ToggleDarkModeState());
   }
 }

@@ -17,7 +17,7 @@ class BuildLanguageTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).bottomNavigationBarTheme.backgroundColor ==
-        darKBackground;
+        AppColors.darKBackground;
     return CheckboxListTile(
       title: Text(
         text,

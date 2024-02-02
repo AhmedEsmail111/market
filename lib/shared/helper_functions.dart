@@ -36,6 +36,6 @@ class HelperFunctions {
   }
 
   static bool isLocaleEnglish() {
-    return CacheHelper.getData(key: languageKey) != 'ar';
+    return CacheHelper.getData(key: AppConstants.languageKey) != 'ar';
   }
 }

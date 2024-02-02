@@ -6,7 +6,7 @@ class DioHelper {
   static init() {
     dio = Dio(
       BaseOptions(
-        baseUrl: baseUrl,
+        baseUrl: ApiConstants.baseUrl,
         receiveDataWhenStatusError: true,
       ),
     );

@@ -45,13 +45,15 @@ class RegisterScreen extends StatelessWidget {
             if (state is AuthenticationRegisterSuccessState) {
               if (state.model.data != null || state.model.data!.token != null) {
                 CacheHelper.saveData(
-                    key: userName, value: state.model.data!.name);
+                    key: AppConstants.userName, value: state.model.data!.name);
                 CacheHelper.saveData(
-                    key: userEmail, value: state.model.data!.email);
+                    key: AppConstants.userEmail,
+                    value: state.model.data!.email);
                 CacheHelper.saveData(
-                    key: userPhone, value: state.model.data!.phone);
+                    key: AppConstants.userPhone,
+                    value: state.model.data!.phone);
                 CacheHelper.saveData(
-                    key: token, value: state.model.data!.token);
+                    key: AppConstants.token, value: state.model.data!.token);
                 // CacheHelper.saveData(
                 //     key: 'id', value: state.model.data!.id.toString());
 

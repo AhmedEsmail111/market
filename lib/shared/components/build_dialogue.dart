@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '/shared/styles/colors.dart';
+
 void buildDialogue(
     {required BuildContext context,
     required String message,
@@ -7,7 +9,10 @@ void buildDialogue(
     String undoText = 'cancel',
     String doText = 'Delete',
     void Function()? onDelete}) {
+  final isDark = Theme.of(context).bottomNavigationBarTheme.backgroundColor ==
+      AppColors.darKBackground;
   final dialogue = AlertDialog(
+    backgroundColor: isDark ? AppColors.blackColor : Colors.white,
     scrollable: true,
     title: Center(
       child: Text(

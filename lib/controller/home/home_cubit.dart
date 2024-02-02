@@ -36,13 +36,13 @@ class HomeCubit extends Cubit<HomeStates> {
   void getHomeData() async {
     // favoritesLoaded = false;
     try {
-      final userToken = CacheHelper.getData(key: token);
+      final userToken = CacheHelper.getData(key: AppConstants.token);
       emit(GetHomeDataLoadingState());
 
       final response = await DioHelper.getData(
-        url: homeEndPoint,
+        url: ApiConstants.homeEndPoint,
         token: userToken,
-        lang: CacheHelper.getData(key: languageKey) ?? 'en',
+        lang: CacheHelper.getData(key: AppConstants.languageKey) ?? 'en',
       );
 
       if (response.data['status'] == true) {
@@ -66,13 +66,13 @@ class HomeCubit extends Cubit<HomeStates> {
 
   void getCategoriesData() async {
     try {
-      final userToken = CacheHelper.getData(key: token);
+      final userToken = CacheHelper.getData(key: AppConstants.token);
       emit(GetCategoriesDataLoadingState());
 
       final response = await DioHelper.getData(
-        url: getCategoriesEndPoint,
+        url: ApiConstants.getCategoriesEndPoint,
         token: userToken,
-        lang: CacheHelper.getData(key: languageKey) ?? 'en',
+        lang: CacheHelper.getData(key: AppConstants.languageKey) ?? 'en',
       );
 
       if (response.data['status'] == true) {

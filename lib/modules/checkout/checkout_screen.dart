@@ -25,7 +25,7 @@ class CheckoutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).bottomNavigationBarTheme.backgroundColor ==
-        darKBackground;
+        AppColors.darKBackground;
     final locale = AppLocalizations.of(context)!;
     final formKey = GlobalKey<FormState>();
     final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -80,7 +80,7 @@ class CheckoutScreen extends StatelessWidget {
                                 .colorScheme
                                 .secondary
                                 .withOpacity(0.4)
-                            : borderColor,
+                            : AppColors.borderColor,
                       ),
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(14.r),
@@ -148,9 +148,9 @@ class CheckoutScreen extends StatelessWidget {
                                 .colorScheme
                                 .secondary
                                 .withOpacity(0.4)
-                            : borderColor,
+                            : AppColors.borderColor,
                       ),
-                      color: isDark ? blackColor : Colors.white,
+                      color: isDark ? AppColors.blackColor : Colors.white,
                       borderRadius: BorderRadius.circular(14.r),
                     ),
                     child: Column(

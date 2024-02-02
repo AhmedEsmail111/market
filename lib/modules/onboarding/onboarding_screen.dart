@@ -19,19 +19,19 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   final pageController = PageController();
   final List<BoardingModel> boardingList = [
     BoardingModel(
-      image: onBoarding,
+      image: AppConstants.onBoarding,
       title: 'Shop App',
       body:
           'Where you find everything you want in just one place with just one press',
     ),
     BoardingModel(
-      image: onBoarding2,
+      image: AppConstants.onBoarding2,
       title: 'Convenient',
       body:
           'Save Time, Money, and struggle by using Shop App. We\'re committed to make your life easier.',
     ),
     BoardingModel(
-      image: onBoarding3,
+      image: AppConstants.onBoarding3,
       title: 'Unlimited Sales',
       body:
           'No matter what you\'re doing want to buy, you will find the right deal with the right price for you with our unlimited Sale ',
@@ -45,7 +45,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         actions: [
           TextButton(
             onPressed: () {
-              CacheHelper.saveData(key: isBoarding, value: true);
+              CacheHelper.saveData(key: AppConstants.isBoarding, value: true);
               HelperFunctions.pussAndRemoveAll(
                 context,
                 const LoginScreen(),
@@ -98,7 +98,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   FloatingActionButton(
                     onPressed: () {
                       if (isLast) {
-                        CacheHelper.saveData(key: isBoarding, value: true);
+                        CacheHelper.saveData(
+                            key: AppConstants.isBoarding, value: true);
                         HelperFunctions.pussAndRemoveAll(
                           context,
                           const LoginScreen(),

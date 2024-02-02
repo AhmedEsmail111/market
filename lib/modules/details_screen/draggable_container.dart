@@ -15,7 +15,7 @@ class BuildDraggableContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).bottomNavigationBarTheme.backgroundColor ==
-        darKBackground;
+        AppColors.darKBackground;
     final locale = AppLocalizations.of(context)!;
     // print(product.description);
     return DraggableScrollableSheet(
@@ -27,7 +27,7 @@ class BuildDraggableContainer extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 16.w),
           clipBehavior: Clip.hardEdge,
           decoration: BoxDecoration(
-            color: isDark ? darKBackground : Colors.white,
+            color: isDark ? AppColors.darKBackground : Colors.white,
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(20.r),
               topRight: Radius.circular(20.r),

@@ -22,15 +22,15 @@ class BuildAddressesItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).bottomNavigationBarTheme.backgroundColor ==
-        darKBackground;
+        AppColors.darKBackground;
     // print(address.id);
     return GestureDetector(
       onLongPress: onLongPress,
       onTap: onTap,
       child: Material(
         elevation: withColor ? 1 : 0,
-        shadowColor: isDark ? null : borderColor,
-        color: isDark ? blackColor : Colors.white,
+        shadowColor: isDark ? null : AppColors.borderColor,
+        color: isDark ? AppColors.blackColor : Colors.white,
         borderRadius: BorderRadius.circular(14.r),
         child: Padding(
           padding: EdgeInsets.all(16.w),

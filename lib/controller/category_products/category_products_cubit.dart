@@ -16,13 +16,13 @@ class CategoryProductsCubit extends Cubit<CategoryProductsStates> {
 
   void getCategoryProducts(int categoryId) async {
     try {
-      final userToken = CacheHelper.getData(key: token);
+      final userToken = CacheHelper.getData(key: AppConstants.token);
       emit(GetCategoryProductsLoadingState());
 
       final response = await DioHelper.getData(
-        url: '$getCategoriesEndPoint/$categoryId',
+        url: '${ApiConstants.getCategoriesEndPoint}/$categoryId',
         token: userToken,
-        lang: CacheHelper.getData(key: languageKey) ?? 'en',
+        lang: CacheHelper.getData(key: AppConstants.languageKey) ?? 'en',
       );
 
       if (response.data['status'] == true) {

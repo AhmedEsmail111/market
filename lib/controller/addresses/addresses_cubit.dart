@@ -22,13 +22,13 @@ class AddressesCubit extends Cubit<AddressesStates> {
   }) async {
     isAddingAddress = true;
     try {
-      final userToken = CacheHelper.getData(key: token);
+      final userToken = CacheHelper.getData(key: AppConstants.token);
       emit(AddAddressLoadingState());
 
       final response = await DioHelper.postData(
-        url: addressesEndPoint,
+        url: ApiConstants.addressesEndPoint,
         token: userToken,
-        lang: CacheHelper.getData(key: languageKey) ?? 'en',
+        lang: CacheHelper.getData(key: AppConstants.languageKey) ?? 'en',
         data: {
           "name": name,
           "latitude": phone,
@@ -66,13 +66,13 @@ class AddressesCubit extends Cubit<AddressesStates> {
   }) async {
     isAddingAddress = true;
     try {
-      final userToken = CacheHelper.getData(key: token);
+      final userToken = CacheHelper.getData(key: AppConstants.token);
       emit(UpdateAddressLoadingState());
 
       final response = await DioHelper.putData(
-        url: "$addressesEndPoint/$addressId",
+        url: "${ApiConstants.addressesEndPoint}/$addressId",
         token: userToken,
-        lang: CacheHelper.getData(key: languageKey) ?? 'en',
+        lang: CacheHelper.getData(key: AppConstants.languageKey) ?? 'en',
         data: {
           "name": name,
           "latitude": phone,
@@ -102,13 +102,13 @@ class AddressesCubit extends Cubit<AddressesStates> {
   AddressesModel? addressesModel;
   Future<void> getAddresses() async {
     try {
-      final userToken = CacheHelper.getData(key: token);
+      final userToken = CacheHelper.getData(key: AppConstants.token);
       emit(GetAddressesLoadingState());
 
       final response = await DioHelper.getData(
-        url: addressesEndPoint,
+        url: ApiConstants.addressesEndPoint,
         token: userToken,
-        lang: CacheHelper.getData(key: languageKey) ?? 'en',
+        lang: CacheHelper.getData(key: AppConstants.languageKey) ?? 'en',
       );
 
       if (response.data['status'] == true) {
@@ -125,11 +125,11 @@ class AddressesCubit extends Cubit<AddressesStates> {
     }
   }
 
-  int? chosenAddressId = CacheHelper.getData(key: addressId);
+  int? chosenAddressId = CacheHelper.getData(key: AppConstants.addressId);
   void changeAddressId(int newId) {
     chosenAddressId = newId;
 
-    CacheHelper.saveData(key: addressId, value: newId);
+    CacheHelper.saveData(key: AppConstants.addressId, value: newId);
     emit(ChangeChosenAddressId());
   }
 }

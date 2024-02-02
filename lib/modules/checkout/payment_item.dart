@@ -22,13 +22,13 @@ class BuildPaymentItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).bottomNavigationBarTheme.backgroundColor ==
-        darKBackground;
+        AppColors.darKBackground;
     return GestureDetector(
       onTap: onTap,
       child: Stack(
         children: [
           Material(
-            color: isDark ? blackColor : Colors.white,
+            color: isDark ? AppColors.blackColor : Colors.white,
             clipBehavior: Clip.hardEdge,
             borderRadius: BorderRadius.circular(14.r),
             child: Padding(

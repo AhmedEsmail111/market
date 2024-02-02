@@ -20,7 +20,7 @@ class BuildCartItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).bottomNavigationBarTheme.backgroundColor ==
-        darKBackground;
+        AppColors.darKBackground;
     final locale = AppLocalizations.of(context)!;
     // print(item.id);
     return BlocConsumer<CartCubit, CartStates>(
@@ -29,23 +29,23 @@ class BuildCartItem extends StatelessWidget {
         final cubit = CartCubit.get(context);
         return Material(
           elevation: 1,
-          shadowColor: isDark ? null : borderColor,
+          shadowColor: isDark ? null : AppColors.borderColor,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(14.r),
               side: BorderSide(
                   color: isDark
                       ? Theme.of(context).colorScheme.secondary.withOpacity(0.2)
-                      : borderColor)),
-          color: isDark ? blackColor : Colors.white,
+                      : AppColors.borderColor)),
+          color: isDark ? AppColors.blackColor : Colors.white,
           clipBehavior: Clip.hardEdge,
           child: Container(
             decoration: BoxDecoration(
-              color: isDark ? blackColor : Colors.white,
+              color: isDark ? AppColors.blackColor : Colors.white,
               borderRadius: BorderRadius.circular(14.r),
               border: Border.all(
                 color: isDark
                     ? Theme.of(context).colorScheme.secondary.withOpacity(0.4)
-                    : borderColor,
+                    : AppColors.borderColor,
               ),
             ),
             child: Padding(

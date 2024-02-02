@@ -25,8 +25,8 @@ class AuthenticationCubit extends Cubit<AuthenticationStates> {
     emit(AuthenticationLoginLoadingState());
     try {
       final response = await DioHelper.postData(
-        url: loginEndPoint,
-        lang: CacheHelper.getData(key: languageKey) ?? 'en',
+        url: ApiConstants.loginEndPoint,
+        lang: CacheHelper.getData(key: AppConstants.languageKey) ?? 'en',
         data: {
           'email': email,
           'password': password,
@@ -61,8 +61,8 @@ class AuthenticationCubit extends Cubit<AuthenticationStates> {
     emit(AuthenticationRegisterLoadingState());
     try {
       final response = await DioHelper.postData(
-        url: registerEndPoint,
-        lang: CacheHelper.getData(key: languageKey) ?? 'en',
+        url: ApiConstants.registerEndPoint,
+        lang: CacheHelper.getData(key: AppConstants.languageKey) ?? 'en',
         data: {
           "name": name,
           "email": email,

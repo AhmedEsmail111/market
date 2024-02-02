@@ -21,7 +21,7 @@ class BuildProductTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).bottomNavigationBarTheme.backgroundColor ==
-        darKBackground;
+        AppColors.darKBackground;
     return InkWell(
       onTap: withFav
           ? () {
@@ -35,14 +35,14 @@ class BuildProductTile extends StatelessWidget {
           : null,
       child: Material(
         elevation: 1,
-        shadowColor: isDark ? null : borderColor,
+        shadowColor: isDark ? null : AppColors.borderColor,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14.r),
             side: BorderSide(
                 color: isDark
                     ? Theme.of(context).colorScheme.secondary.withOpacity(0.2)
-                    : borderColor)),
-        color: isDark ? blackColor : Colors.white,
+                    : AppColors.borderColor)),
+        color: isDark ? AppColors.blackColor : Colors.white,
         clipBehavior: Clip.hardEdge,
         child: Container(
           clipBehavior: Clip.hardEdge,
@@ -50,9 +50,9 @@ class BuildProductTile extends StatelessWidget {
             border: Border.all(
               color: isDark
                   ? Theme.of(context).colorScheme.secondary.withOpacity(0.4)
-                  : borderColor,
+                  : AppColors.borderColor,
             ),
-            color: isDark ? blackColor : Colors.white,
+            color: isDark ? AppColors.blackColor : Colors.white,
             borderRadius: BorderRadius.circular(14.r),
           ),
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.w),

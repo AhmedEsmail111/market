@@ -20,7 +20,7 @@ class BuildRowPriceFav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).bottomNavigationBarTheme.backgroundColor ==
-        darKBackground;
+        AppColors.darKBackground;
     return Row(
       children: [
         if (optionalText != null)

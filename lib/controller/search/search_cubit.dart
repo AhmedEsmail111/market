@@ -13,13 +13,13 @@ class SearchCubit extends Cubit<SearchStates> {
   static SearchCubit get(context) => BlocProvider.of(context);
   SearchModel? searchModel;
   void search(String query) async {
-    final userToken = CacheHelper.getData(key: token);
+    final userToken = CacheHelper.getData(key: AppConstants.token);
     try {
       emit(LoadingSearchState());
       final response = await DioHelper.postData(
-        url: searchEndPoint,
+        url: ApiConstants.searchEndPoint,
         token: userToken,
-        lang: CacheHelper.getData(key: languageKey) ?? 'en',
+        lang: CacheHelper.getData(key: AppConstants.languageKey) ?? 'en',
         data: {"text": query},
       );
       print('data is ${response.data}');
