@@ -1,11 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shop_app/controller/favorites/favorites_states.dart';
 
 import '../../models/change_favorite/change_favorite_model.dart';
 import '../../models/favorites/favorites_model.dart';
-import '../../shared/components/toast_message.dart';
 import '../../shared/constants/api_constant.dart';
 import '../../shared/constants/constants.dart';
 import '../../shared/network/local/shared_preference.dart';
@@ -120,12 +117,12 @@ class FavoritesCubit extends Cubit<FavoritesStates> {
           // saveFavoritesToStorage();
         }
         emit(ChangeFaveFailureState());
-        buildToastMessage(
-          message: 'Something went wrong!',
-          gravity: ToastGravity.CENTER,
-          textColor: Colors.white,
-          background: const Color.fromARGB(255, 173, 16, 4).withOpacity(0.8),
-        );
+        // buildToastMessage(
+        //   message: 'Something went wrong!',
+        //   gravity: ToastGravity.CENTER,
+        //   textColor: Colors.white,
+        //   background: const Color.fromARGB(255, 173, 16, 4).withOpacity(0.8),
+        // );
       }
     } catch (error) {
       print(error.toString());
@@ -141,12 +138,12 @@ class FavoritesCubit extends Cubit<FavoritesStates> {
         // saveFavoritesToStorage();
       }
       emit(ChangeFaveFailureState());
-      buildToastMessage(
-        message: 'Something went wrong!',
-        gravity: ToastGravity.BOTTOM,
-        textColor: Colors.white,
-        background: const Color.fromARGB(255, 173, 16, 4).withOpacity(0.8),
-      );
+      // buildToastMessage(
+      //   message: 'Something went wrong!',
+      //   gravity: ToastGravity.BOTTOM,
+      //   textColor: Colors.white,
+      //   background: const Color.fromARGB(255, 173, 16, 4).withOpacity(0.8),
+      // );
     }
   }
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import '/controller/authentication/authentication_cubit.dart';
 import '/controller/authentication/authentication_states.dart';
@@ -10,7 +9,6 @@ import '/layout/shop_layout.dart';
 import '/modules/register/register_screen.dart';
 import '/shared/components/default_button_in_app.dart';
 import '/shared/components/default_text_form_in_app.dart';
-import '/shared/components/toast_message.dart';
 import '/shared/constants/constants.dart';
 import '/shared/helper_functions.dart';
 import '/shared/network/local/shared_preference.dart';
@@ -32,12 +30,12 @@ class LoginScreen extends StatelessWidget {
         body: BlocConsumer<AuthenticationCubit, AuthenticationStates>(
           listener: (context, state) {
             if (state is AuthenticationLoginErrorState) {
-              buildToastMessage(
-                message: state.error,
-                gravity: ToastGravity.CENTER,
-                textColor: Colors.white,
-                background: Colors.red,
-              );
+              // buildToastMessage(
+              //   message: state.error,
+              //   gravity: ToastGravity.CENTER,
+              //   textColor: Colors.white,
+              //   background: Colors.red,
+              // );
             }
             if (state is AuthenticationLoginSuccessState) {
               if (state.model.data != null || state.model.data!.token != null) {

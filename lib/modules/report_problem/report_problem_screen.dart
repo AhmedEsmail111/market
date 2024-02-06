@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+// import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shop_app/controller/complaint/complaint_cubit.dart';
 import 'package:shop_app/controller/complaint/complaint_states.dart';
 import 'package:shop_app/shared/components/default_button_in_app.dart';
 import 'package:shop_app/shared/components/default_text_form_in_app.dart';
-import 'package:shop_app/shared/components/toast_message.dart';
 import 'package:shop_app/shared/constants/constants.dart';
 import 'package:shop_app/shared/network/local/shared_preference.dart';
 
@@ -25,16 +24,16 @@ class ReportProblemScreen extends StatelessWidget {
       child: BlocConsumer<ComplaintCubit, ComplaintStates>(
         listener: (context, state) {
           if (state is AddComplaintSuccessState) {
-            buildToastMessage(
-              message:
-                  CacheHelper.getData(key: AppConstants.languageKey) == 'ar'
-                      ? 'شكرا لمساعدتنا عل جعل الماركت مكانا امنا'
-                      : 'Thanks for helping us mak Market a safe place',
-              gravity: ToastGravity.BOTTOM,
-              textColor: Theme.of(context).colorScheme.onSecondary,
-              background:
-                  Theme.of(context).colorScheme.secondary.withOpacity(0.8),
-            );
+            // buildToastMessage(
+            //   message:
+            //       CacheHelper.getData(key: AppConstants.languageKey) == 'ar'
+            //           ? 'شكرا لمساعدتنا عل جعل الماركت مكانا امنا'
+            //           : 'Thanks for helping us mak Market a safe place',
+            //   gravity: ToastGravity.BOTTOM,
+            //   textColor: Theme.of(context).colorScheme.onSecondary,
+            //   background:
+            //       Theme.of(context).colorScheme.secondary.withOpacity(0.8),
+            // );
           }
         },
         builder: (context, state) {
