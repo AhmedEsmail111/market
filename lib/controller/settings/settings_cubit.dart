@@ -12,18 +12,8 @@ import '../../shared/network/remote/remote.dart';
 class SettingsCubit extends Cubit<SettingsStates> {
   SettingsCubit() : super(InitialSettingsState());
   static SettingsCubit get(context) => BlocProvider.of(context);
-
+// logout by removing the cached token and directing the user to the login page
   void logout(context) async {
-    // final bucket = await TLocaleStorage.instance()
-    //     .readData(CacheHelper.getData(key: 'id'));
-    // if (bucket != null) {
-    //   for (final key in bucket.keys) {
-    //     await TLocaleStorage.instance().removeData(key.toString());
-    //   }
-    // } else {
-    //   print('no bucket associated with');
-    // }
-    // await TLocaleStorage.instance().removeData(CacheHelper.getData(key: 'id'));
     CacheHelper.removeData(key: AppConstants.token);
     Navigator.pushAndRemoveUntil(
         context,
@@ -34,7 +24,7 @@ class SettingsCubit extends Cubit<SettingsStates> {
   }
 
   LoginModel? userModel;
-
+// get the current user data
   void getUser() async {
     try {
       final userToken = CacheHelper.getData(key: AppConstants.token);
@@ -60,6 +50,7 @@ class SettingsCubit extends Cubit<SettingsStates> {
     }
   }
 
+// update the user information with new info
   void updateUser({
     required String name,
     required String email,
@@ -103,6 +94,7 @@ class SettingsCubit extends Cubit<SettingsStates> {
     }
   }
 
+//  update the user password with the old and the new password entered by the user
   void updateUserPassword({
     required String oldPassword,
     required String newPassword,

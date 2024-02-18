@@ -1,75 +1,33 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:shop_app/models/cart/payment.dart';
 
 import '../../models/orders/orders_model.dart';
+import '../../shared/components/toast_message.dart';
 import '../../shared/constants/constants.dart';
 import '../../shared/network/local/shared_preference.dart';
 import '../../shared/network/remote/remote.dart';
 import '/controller/cart/cart_states.dart';
 import '/models/cart/add_remove_model.dart';
 import '/models/cart/cart_model.dart';
-import '/shared/components/toast_message.dart';
+import '/models/cart/payment.dart';
 import '/shared/constants/api_constant.dart';
+import '/shared/styles/colors.dart';
 
 class CartCubit extends Cubit<CartStates> {
   CartCubit() : super(InitialCartState());
 
   static CartCubit get(context) => BlocProvider.of(context);
-
-  // Razorpay? razorpay;
-  // Map<String, Object>? options;
-
-  // void initRazpory() {
-  //   razorpay = Razorpay();
-  //   options = {
-  //     'key': 'rzp_test_1DP5mmOlF5G5ag',
-  //     'amount': 100,
-  //     'name': 'Acme Corp.',
-  //     'description': 'Fine T-Shirt',
-  //     'retry': {'enabled': true, 'max_count': 1},
-  //     'send_sms_hash': true,
-  //     'prefill': {'contact': '8888888888', 'email': 'test@razorpay.com'},
-  //     'external': {
-  //       'wallets': ['paytm']
-  //     }
-  //   };
-  // }
-
-  // void handlePaymentSuccess(PaymentSuccessResponse response, context) {
-  //   buildToastMessage(
-  //     message: ' payment success with ${response.orderId}',
-  //     gravity: ToastGravity.CENTER,
-  //     textColor: Theme.of(context).colorScheme.onSecondary,
-  //     background: Theme.of(context).colorScheme.secondary,
-  //   );
-  // }
-
-  // void handlePaymentError(PaymentFailureResponse response, context) {
-  //   // Do something when payment fails
-  //   buildToastMessage(
-  //     message: ' payment fails with ${response.message}',
-  //     gravity: ToastGravity.CENTER,
-  //     textColor: Theme.of(context).colorScheme.onSecondary,
-  //     background: Theme.of(context).colorScheme.secondary,
-  //   );
-  // }
-
-  // void handleExternalWallet(ExternalWalletResponse response, context) {
-  //   // Do something when an external wallet was selected
-  //   buildToastMessage(
-  //     message: ' payment done with ${response.walletName}',
-  //     gravity: ToastGravity.CENTER,
-  //     textColor: Theme.of(context).colorScheme.onSecondary,
-  //     background: Theme.of(context).colorScheme.secondary,
-  //   );
-  // }
-
+// a list of int to store all the ids of the items in the cart
+//to know if a certain product is already in the cart or not
   List<int> cartItems = [];
+  // a map to control the quantity of each items in the cart
   Map<int, int> cartMap = {};
-  CartModel? cartModel;
 
+  CartModel? cartModel;
+// get all items in the cart
   Future<void> getCart({bool isFirst = true, bool fetch = true}) async {
     try {
       final userToken = CacheHelper.getData(key: AppConstants.token);
@@ -80,10 +38,10 @@ class CartCubit extends Cubit<CartStates> {
         token: userToken,
         lang: CacheHelper.getData(key: AppConstants.languageKey) ?? 'en',
       );
-      // print(response.data);
+
       if (response.data['status'] == true) {
-        // print(response.data);
         cartModel = CartModel.fromJson(response.data);
+        // if true will reset the cartItems list and store the values again
         if (fetch) {
           cartItems = [];
           for (final item in cartModel!.data.cartItems) {
@@ -91,8 +49,9 @@ class CartCubit extends Cubit<CartStates> {
           }
         }
 
-        // initialize the map with ddta from the server the first time we make a call
+        // if true will reset the cartMap map object and store the values again
         if (isFirst) {
+          cartMap = {};
           for (final item in cartModel!.data.cartItems) {
             cartMap.addAll({item.id: item.quantity});
           }
@@ -108,8 +67,10 @@ class CartCubit extends Cubit<CartStates> {
     }
   }
 
+// to know if we are currently adding an item to the cart or not
   var isAddRemoveDone = true;
   AddRemoveCartModel? addRemoveCartModel;
+  // adds or removes an item from the cart depending on whether this item is already in the list or not
   Future<void> addOrRemoveFromCart(int productId) async {
     isAddRemoveDone = false;
     try {
@@ -124,22 +85,23 @@ class CartCubit extends Cubit<CartStates> {
           "product_id": productId,
         },
       );
-      // print(response.data);
+
       if (response.data['status'] == true) {
         addRemoveCartModel = AddRemoveCartModel.fromJson(response.data);
         if (addRemoveCartModel!.data!.product.name != null) {
+          // we add it it locally to the list too
           cartItems.add(productId);
           print(' add is done ${cartItems.length}');
         } else {
+          //and we remove it  locally from the list if it was already there too
           cartItems.remove(productId);
           print('remove is done ${cartItems.length}');
         }
 
-        // print('${cartModel!.data.cartItems.length} number of cart items');
         isAddRemoveDone = true;
         emit(ToggleProductInCartSuccess(
             successMessage: addRemoveCartModel!.message));
-        // print(cartItems.length);
+
         getCart(fetch: false);
       } else {
         isAddRemoveDone = true;
@@ -152,12 +114,13 @@ class CartCubit extends Cubit<CartStates> {
     }
   }
 
+// change the quantity of an item in the list make the update looks as if it real time utilizing the cartMap map object
   void changeQuantity({required int itemId, required int quantity}) async {
-    // isChangingDone = false;
+    // store the previous quantity to use it in case of an error
     final previousQuantity = cartMap[itemId];
 
     cartMap[itemId] = quantity;
-    print(cartMap[itemId]);
+
     try {
       final userToken = CacheHelper.getData(key: AppConstants.token);
       emit(ChangeQuantityInCartLoading());
@@ -173,11 +136,10 @@ class CartCubit extends Cubit<CartStates> {
 
       if (response.data['status'] == true) {
         getCart(isFirst: false);
-        // .then((value) => isChangingDone = true);
-        print(cartMap[itemId]);
+
         emit(ChangeQuantityInCartSuccess());
-        // print(cartItems.length);
       } else {
+        // if error happened go back to the previous value
         cartMap[itemId] = previousQuantity!;
         buildToastMessage(
           message: 'Something went wrong!',
@@ -185,10 +147,11 @@ class CartCubit extends Cubit<CartStates> {
           textColor: Colors.white,
           background: const Color.fromARGB(255, 136, 14, 6).withOpacity(0.8),
         );
-        // isChangingDone = true;
+
         emit(ChangeQuantityInCartFailure());
       }
     } catch (error) {
+      // if error happened go back to the previous value
       cartMap[itemId] = previousQuantity!;
       buildToastMessage(
         message: 'Something went wrong!',
@@ -203,6 +166,7 @@ class CartCubit extends Cubit<CartStates> {
   }
 
   var isRemoving = false;
+  // remove am item from the cart
   void removeItem(int itemId) async {
     isRemoving = true;
     try {
@@ -214,12 +178,8 @@ class CartCubit extends Cubit<CartStates> {
         token: userToken,
         lang: CacheHelper.getData(key: AppConstants.languageKey) ?? 'en',
       );
-      // print(response.data);
+
       if (response.data['status'] == true) {
-        // addRemoveCartModel = AddRemoveCartModel.fromJson(response.data);
-
-        // print('${cartModel!.data.cartItems.length} number of cart items');
-
         await getCart();
         isRemoving = false;
 
@@ -237,6 +197,7 @@ class CartCubit extends Cubit<CartStates> {
     }
   }
 
+// validate a promo code
   Future<void> validatePromoCode(String code) async {
     try {
       final userToken = CacheHelper.getData(key: AppConstants.token);
@@ -250,7 +211,7 @@ class CartCubit extends Cubit<CartStates> {
           "code": code,
         },
       );
-      // print(response.data);
+
       if (response.data['status'] == true) {
         emit(
             ValidatePromoCodeSuccess(successMessage: response.data['message']));
@@ -263,8 +224,11 @@ class CartCubit extends Cubit<CartStates> {
     }
   }
 
+// to know if the adding process is done?
   var isAddingOrder = false;
-  void addOrder({required int paymentMethod, required int addressId}) async {
+  // adds an order to the database using the payment method and the addressId
+  Future<void> addOrder(
+      {required int paymentMethod, required int addressId}) async {
     isAddingOrder = true;
     try {
       final userToken = CacheHelper.getData(key: AppConstants.token);
@@ -296,6 +260,7 @@ class CartCubit extends Cubit<CartStates> {
   }
 
   OrdersModel? ordersModel;
+  // get all the orders in the database
   Future<void> getOrders() async {
     try {
       final userToken = CacheHelper.getData(key: AppConstants.token);
@@ -320,6 +285,7 @@ class CartCubit extends Cubit<CartStates> {
   }
 
   bool isCancellingOrder = false;
+  // cancels an order and change this orders details using its index in the ordersModel to be "Cancelled"
   cancelOrder(int orderId, int orderIndex) async {
     isCancellingOrder = true;
     try {
@@ -334,9 +300,12 @@ class CartCubit extends Cubit<CartStates> {
       // print(response.data);
       if (response.data['status'] == true) {
         isCancellingOrder = false;
-        ordersModel!.data.orders[orderIndex].status = 'Cancelled';
-        // orderDetailsModel = OrderDetailsModel.fromJson(response.data);
-        // print(orderDetailsModel!.status);
+
+        ordersModel!.data.orders[orderIndex].status =
+            CacheHelper.getData(key: AppConstants.languageKey) == 'ar'
+                ? 'ملغي'
+                : 'Cancelled';
+
         emit(CancelOrderSuccessState());
       } else {
         isCancellingOrder = false;
@@ -352,18 +321,8 @@ class CartCubit extends Cubit<CartStates> {
   List<PaymentModel> payments = [
     PaymentModel(
         name: CacheHelper.getData(key: AppConstants.languageKey) == 'ar'
-            ? 'بوابة الدفع بايبال'
-            : 'Paypal',
-        image: 'assets/images/paypal.jpg'),
-    PaymentModel(
-        name: CacheHelper.getData(key: AppConstants.languageKey) == 'ar'
-            ? 'بطاقة ماستر كارد'
-            : 'Mastercard',
-        image: 'assets/images/mastercard.jpg'),
-    PaymentModel(
-        name: CacheHelper.getData(key: AppConstants.languageKey) == 'ar'
-            ? 'بطاقة فيزا'
-            : 'Visa',
+            ? 'الدفع اونلاين'
+            : 'Online payment',
         image: 'assets/images/visa.jpg'),
     PaymentModel(
         name: CacheHelper.getData(key: AppConstants.languageKey) == 'a'
@@ -371,12 +330,13 @@ class CartCubit extends Cubit<CartStates> {
             : 'Cash on Delivery',
         image: 'assets/images/pay.jpg'),
   ];
-  var chosenPaymentIndex = 3;
+  var chosenPaymentIndex = 1;
   void changePayment(int newPaymentIndex) {
     chosenPaymentIndex = newPaymentIndex;
     emit(ChangePaymentIndexState());
   }
 
+// returns the total of the order using the items in the order
   double getTotal(List<CartItem> items) {
     double total = 0;
     for (final item in items) {
@@ -386,10 +346,97 @@ class CartCubit extends Cubit<CartStates> {
     return total;
   }
 
+// controls whether the user has entered a code to be verified or not
   var code = '';
-
   void changeCode(String newCode) {
     code = newCode;
     emit(ChangeCodeState());
+  }
+
+// the main method that handles the payment process
+  Future<void> makePayment(int amount, String currency, context,
+      {required int paymentMethod, required int addressId}) async {
+    try {
+      final response =
+          await _getClientSecret((amount * 100).toString(), currency);
+
+      await _initPaymentSheet(response.data['client_secret'], context);
+// show the payment sheet we created and if the payment is successful we add the order to the data
+      await Stripe.instance
+          .presentPaymentSheet()
+          .then(
+            (value) =>
+                addOrder(paymentMethod: paymentMethod, addressId: addressId),
+          )
+          .onError((error, stackTrace) => print('on Error'));
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error: $error'),
+        ),
+      );
+      rethrow;
+    }
+  }
+
+// initialize the payment sheet to be displayed to the user and make some custom appearance modifications
+  Future<void> _initPaymentSheet(String clientSecret, context) async {
+    final bool isDark =
+        CacheHelper.getData(key: AppConstants.isDarkMode) == true;
+    try {
+      await Stripe.instance.initPaymentSheet(
+        paymentSheetParameters: SetupPaymentSheetParameters(
+          paymentIntentClientSecret: clientSecret,
+          merchantDisplayName: 'Market',
+          appearance: PaymentSheetAppearance(
+            colors: const PaymentSheetAppearanceColors().copyWith(
+              background: isDark ? AppColors.blackColor : null,
+              primary: isDark ? Colors.white : null,
+            ),
+            primaryButton: PaymentSheetPrimaryButtonAppearance(
+              colors: const PaymentSheetPrimaryButtonTheme().copyWith(
+                dark: PaymentSheetPrimaryButtonThemeColors(
+                  background: Theme.of(context).colorScheme.primary,
+                  text: Theme.of(context).colorScheme.onPrimary,
+                ),
+                light: PaymentSheetPrimaryButtonThemeColors(
+                  background: Theme.of(context).colorScheme.primary,
+                  text: Theme.of(context).colorScheme.onPrimary,
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    } catch (e) {
+      print('error in _initPayment  ${e.toString()}');
+      rethrow;
+    }
+  }
+
+// communicate with stripe to inform her with a new payment intent to be created
+//and returns the response from stripe that contains the client secret
+  Future<Response> _getClientSecret(String amount, String currency) async {
+    Dio dio = Dio();
+    try {
+      var response = await dio.post(
+        'https://api.stripe.com/v1/payment_intents',
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer ${AppConstants.secretKey}',
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+        ),
+        data: {
+          'amount': amount,
+          'currency': currency,
+        },
+      );
+      print(response.data); // Print response details for debugging
+      return response;
+    } catch (error) {
+      print('Error in _getClientSecret: $error');
+      rethrow;
+    }
   }
 }

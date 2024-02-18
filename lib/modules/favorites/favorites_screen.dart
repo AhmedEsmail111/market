@@ -9,6 +9,7 @@ class FavoritesScreen extends StatelessWidget {
   const FavoritesScreen({super.key});
   @override
   Widget build(BuildContext context) {
+    // draw the favorites items
     return BlocConsumer<FavoritesCubit, FavoritesStates>(
       listener: (ctx, state) {},
       builder: (context, state) {

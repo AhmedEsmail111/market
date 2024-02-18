@@ -16,6 +16,7 @@ class BuildAddToCart extends StatelessWidget {
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
     return BlocConsumer<CartCubit, CartStates>(listener: (context, state) {
+      // show a toast message when the user add or remove the item from the cart
       if (state is ToggleProductInCartSuccess) {
         buildToastMessage(
           message: state.successMessage,
@@ -28,34 +29,6 @@ class BuildAddToCart extends StatelessWidget {
       final cubit = CartCubit.get(context);
       return Row(
         children: [
-          // IconButton(
-          //   style: IconButton.styleFrom(
-          //       backgroundColor: Theme.of(context)
-          //           .colorScheme
-          //           .secondary
-          //           .withOpacity(0.5)),
-          //   color: Colors.white,
-          //   onPressed: () {
-          //     cubit.decrement();
-          //   },
-          //   icon: const Icon(Iconsax.minus_square),
-          // ),
-          // SizedBox(width: 4.w),
-          // Text(
-          //   cubit.itemsNumber.toString(),
-          //   style: Theme.of(context).textTheme.bodyMedium,
-          // ),
-          // SizedBox(width: 4.w),
-          // IconButton(
-          //   style: IconButton.styleFrom(
-          //       backgroundColor:
-          //           Theme.of(context).colorScheme.primary.withOpacity(0.8)),
-          //   color: Colors.white,
-          //   onPressed: () {
-          //     cubit.increment();
-          //   },
-          //   icon: const Icon(Iconsax.add_square),
-          // ),
           const Spacer(),
           Container(
             decoration: BoxDecoration(
@@ -63,33 +36,19 @@ class BuildAddToCart extends StatelessWidget {
               border: Border.all(
                 color: Theme.of(context).colorScheme.secondary.withOpacity(0.7),
               ),
-              color:
-                  //  cubit.itemsNumber == 0
-                  //     ? Theme.of(context)
-                  //         .colorScheme
-                  //         .secondary
-                  //         .withOpacity(0.15)
-                  //     :
-                  Theme.of(context).colorScheme.primary,
+              color: Theme.of(context).colorScheme.primary,
             ),
             child: cubit.isAddRemoveDone
                 ? TextButton.icon(
                     onPressed: () {
-                      cubit.addOrRemoveFromCart(id).then((value) {
-                        print(cubit.cartItems.contains(id));
-                        print(cubit.cartItems.length);
-                      });
+                      // adds or removes an item from the cart
+                      cubit.addOrRemoveFromCart(id);
                     },
                     icon: Icon(
                         cubit.cartItems.contains(id)
                             ? Iconsax.shop_remove
                             : Iconsax.shop_add,
-                        color:
-                            // cubit.itemsNumber != 0
-                            //     ?
-                            Theme.of(context).colorScheme.onPrimary
-                        // : null,
-                        ),
+                        color: Theme.of(context).colorScheme.onPrimary),
                     label: Text(
                       cubit.cartItems.contains(id)
                           ? locale.remove_cart

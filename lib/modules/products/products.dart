@@ -3,20 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:shop_app/shared/helper_functions.dart';
 
+import '../../shared/components/products_item.dart';
+import '../../shared/helper_functions.dart';
 import '../../shared/styles/colors.dart';
 import '/controller/home/home_cubit.dart';
 import '/controller/home/home_states.dart';
 import '/models/home/home_model.dart';
 import '/modules/products/category_stack_item.dart';
 import '/shared/components/custom_indicator.dart';
-import '/shared/components/products_item.dart';
 import '/shared/components/slider.dart';
 
 class BuildProducts extends StatelessWidget {
-  final HomeModel model;
-  BuildProducts({super.key, required this.model});
+  final HomeModel? model;
+  BuildProducts({super.key, this.model});
 
   final controller = CarouselController();
   @override
@@ -27,6 +27,7 @@ class BuildProducts extends StatelessWidget {
     return BlocBuilder<HomeCubit, HomeStates>(
       builder: (context, state) {
         final cubit = HomeCubit.get(context);
+        print(cubit.banners.length);
         // print(cubit.favorites.entries.toList().length);
         return SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
@@ -36,7 +37,7 @@ class BuildProducts extends StatelessWidget {
             shrinkWrap: true,
             children: [
               BuildSlider(
-                images: model.data.banners,
+                images: cubit.banners,
                 controller: controller,
                 onPageChanged: (index, _) {
                   cubit.changeSliderIndex(index);
@@ -46,7 +47,7 @@ class BuildProducts extends StatelessWidget {
                 viewPort: 0.9,
               ),
               BuildCustomIndicator(
-                numberOfIndicators: model.data.banners,
+                numberOfIndicators: cubit.banners,
                 controller: controller,
                 sliderIndex: cubit.sliderIndex,
               ),
@@ -60,7 +61,7 @@ class BuildProducts extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(14.r),
                   color: isDark
-                      ? Theme.of(context).colorScheme.secondary
+                      ? Theme.of(context).colorScheme.secondary.withOpacity(0.6)
                       : Theme.of(context)
                           .colorScheme
                           .secondary
@@ -94,7 +95,7 @@ class BuildProducts extends StatelessWidget {
               SizedBox(
                 height: 16.h,
               ),
-              // const BuildDividerLine(),
+              // // const BuildDividerLine(),
               Padding(
                 padding: HelperFunctions.isLocaleEnglish()
                     ? EdgeInsets.only(left: 4.w)
@@ -109,19 +110,18 @@ class BuildProducts extends StatelessWidget {
               ),
 
               GridView.builder(
-                  itemCount: model.data.products.length,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 8.w,
-                      mainAxisSpacing: 8.w,
-                      childAspectRatio: 1 / 1.34),
-                  itemBuilder: (ctx, index) => BuildProductsItem(
-                        product: model.data.products[index],
-                        onTap: () {},
-                        index: index,
-                      ))
+                itemCount: cubit.homeModel!.products.length,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 8.w,
+                    mainAxisSpacing: 8.w,
+                    childAspectRatio: 1 / 1.36),
+                itemBuilder: (ctx, index) => BuildProductsItem(
+                  product: cubit.homeModel!.products[index],
+                ),
+              )
             ],
           ),
         );

@@ -22,6 +22,7 @@ class CartScreen extends StatelessWidget {
     final locale = AppLocalizations.of(context)!;
     return BlocConsumer<CartCubit, CartStates>(
       listener: (context, state) {
+        // show a toast message if the the item was removed from the database
         if (state is RemoveItemInCartSuccess) {
           buildToastMessage(
             message: locale.success_delete,
@@ -85,25 +86,28 @@ class CartScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              bottomNavigationBar: cubit.cartModel != null &&
-                      cubit.cartModel!.data.cartItems.isNotEmpty
-                  ? Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-                      child: BuildDefaultButton(
-                        context: context,
-                        onTap: () {
-                          HelperFunctions.pushScreen(
-                              context, const CheckoutScreen());
-                        },
-                        text: cubit.cartModel != null
-                            ? '${locale.checkout} ${cubit.getTotal(cubit.cartModel!.data.cartItems).toStringAsFixed(1)}'
-                            : locale.checkout,
-                        elevation: 4,
-                      ),
-                    )
-                  : null,
+              bottomNavigationBar:
+                  // show it only if the cartModel is not null and is not empty
+                  cubit.cartModel != null &&
+                          cubit.cartModel!.data.cartItems.isNotEmpty
+                      ? Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 16.w, vertical: 8.h),
+                          child: BuildDefaultButton(
+                            context: context,
+                            onTap: () {
+                              HelperFunctions.pushScreen(
+                                  context, const CheckoutScreen());
+                            },
+                            text: cubit.cartModel != null
+                                ? '${locale.checkout} ${cubit.getTotal(cubit.cartModel!.data.cartItems).toStringAsFixed(1)}'
+                                : locale.checkout,
+                            elevation: 4,
+                          ),
+                        )
+                      : null,
             ),
+            // paint an overly on the screen in case we are removing an item from the database
             if (cubit.isRemoving) const BuildLoadingContainer()
           ],
         );

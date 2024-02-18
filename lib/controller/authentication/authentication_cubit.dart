@@ -13,13 +13,14 @@ class AuthenticationCubit extends Cubit<AuthenticationStates> {
   static AuthenticationCubit get(context) => BlocProvider.of(context);
 
   bool isObscured = false;
-
+//change the password visibility
   void changePasswordVisibility() {
     isObscured = !isObscured;
     print(isObscured);
     emit(AuthenticationChangePasswordVisibility());
   }
 
+//login user
   LoginModel? loginModel;
   void loginUser({required String email, required String password}) async {
     emit(AuthenticationLoginLoadingState());
@@ -52,6 +53,7 @@ class AuthenticationCubit extends Cubit<AuthenticationStates> {
     }
   }
 
+//register user
   void registerUser({
     required String email,
     required String password,

@@ -1,36 +1,18 @@
-class HomeModel {
-  final bool status;
+import 'dart:convert' as convert_json;
 
-  final Data data;
+class HomeModel {
+  final List<Product> products;
 
   HomeModel({
-    required this.status,
-    required this.data,
+    required this.products,
   });
 
   factory HomeModel.fromJson(Map<String, dynamic> json) => HomeModel(
-        status: json["status"],
-        data: Data.fromJson(json["data"]),
-      );
-}
-
-class Data {
-  final List<String> banners;
-  final List<Product> products;
-  final String ad;
-
-  Data({
-    required this.banners,
-    required this.products,
-    required this.ad,
-  });
-
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
-        banners:
-            List<String>.from(json["banners"].map((banner) => banner["image"])),
         products: List<Product>.from(
-            json["products"].map((product) => Product.fromJson(product))),
-        ad: json["ad"],
+          json["products"].map(
+            (product) => Product.fromJson(product),
+          ),
+        ),
       );
 }
 
@@ -79,7 +61,8 @@ class Product {
     required this.inFavorites,
     required this.inCart,
   });
-
+// images could be a string encoded or a list or strings or even null
+//and inFavorites and inCart could be int representing booleans or could be normal true or false values
   factory Product.fromJson(Map<String, dynamic> json) => Product(
         id: json["id"],
         price: json["price"]?.toDouble(),
@@ -89,9 +72,21 @@ class Product {
         name: json["name"],
         description: json["description"] ?? '',
         images: json["images"] != null
-            ? List<String>.from(json["images"].map((image) => image))
+            ? json["images"] is String
+                ? List<String>.from(convert_json.json
+                    .decode(json["images"])
+                    .map((image) => image))
+                : List<String>.from(json["images"].map((image) => image))
             : [json["image"], json["image"], json["image"], json["image"]],
-        inFavorites: json["in_favorites"],
-        inCart: json["in_cart"],
+        inFavorites: json["in_favorites"] is int
+            ? json["in_favorites"] == 0
+                ? true
+                : false
+            : json["in_favorites"],
+        inCart: json["in_favorites"] is int
+            ? json["in_favorites"] == 0
+                ? true
+                : false
+            : json["in_favorites"],
       );
 }

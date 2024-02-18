@@ -1,33 +1,29 @@
 class CategoriesModel {
-  final bool status;
-
-  final List<Data> data;
+  final List<Category> data;
 
   CategoriesModel({
-    required this.status,
     required this.data,
   });
 
   factory CategoriesModel.fromJson(Map<String, dynamic> json) =>
       CategoriesModel(
-        status: json["status"],
-        data: List<Data>.from(
-            json["data"]["data"].map((cat) => Data.fromJson(cat))),
+        data: List<Category>.from(
+            json["data"]["data"].map((cat) => Category.fromJson(cat))),
       );
 }
 
-class Data {
+class Category {
   final int id;
   final String name;
   final String image;
 
-  Data({
+  Category({
     required this.id,
     required this.name,
     required this.image,
   });
 
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
+  factory Category.fromJson(Map<String, dynamic> json) => Category(
         id: json["id"],
         name: json["name"],
         image: json["image"],

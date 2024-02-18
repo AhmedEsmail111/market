@@ -6,13 +6,15 @@ import 'package:shop_app/modules/products/products.dart';
 
 class ProductsScreen extends StatelessWidget {
   const ProductsScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeCubit, HomeStates>(builder: (context, state) {
       final cubit = HomeCubit.get(context);
       return Scaffold(
-        body: cubit.homeModel != null && cubit.categoryModel != null
-            ? BuildProducts(model: cubit.homeModel!)
+        // if loading data is finished ,show the screen
+        body: !cubit.isLoading
+            ? BuildProducts()
             : const Center(
                 child: CircularProgressIndicator(),
               ),

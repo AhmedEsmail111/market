@@ -34,6 +34,7 @@ class BuildPaymentSection extends StatelessWidget {
                   onPressed: () {
                     scaffoldKey.currentState!.showBottomSheet(
                       (context) => Container(
+                        // a bottom sheet , so the user could change the payment method he want to go through with
                         decoration: BoxDecoration(
                           color: isDark
                               ? Colors.grey.shade500
@@ -76,6 +77,7 @@ class BuildPaymentSection extends StatelessWidget {
                                     chosenIndex: cubit.chosenPaymentIndex,
                                     currentIndex: index,
                                     onTap: () {
+                                      // change the payment method to the one he has chosen
                                       cubit.changePayment(index);
                                       Navigator.pop(context);
                                     },
@@ -104,6 +106,7 @@ class BuildPaymentSection extends StatelessWidget {
                 ),
               ],
             ),
+            // the default payment method at first then it shows the one that the user has chosen
             BuildPaymentItem(
               image: cubit.payments[cubit.chosenPaymentIndex].image,
               name: cubit.payments[cubit.chosenPaymentIndex].name,

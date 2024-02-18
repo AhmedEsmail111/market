@@ -17,7 +17,7 @@ class BuildDraggableContainer extends StatelessWidget {
     final isDark = Theme.of(context).bottomNavigationBarTheme.backgroundColor ==
         AppColors.darKBackground;
     final locale = AppLocalizations.of(context)!;
-    // print(product.description);
+    // a draggable sheet to put under the image to display the details in a nice way
     return DraggableScrollableSheet(
       initialChildSize: 0.6,
       maxChildSize: 1.0,

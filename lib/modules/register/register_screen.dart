@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shop_app/layout/shop_layout.dart';
 
 import '../../controller/authentication/authentication_cubit.dart';
 import '../../controller/authentication/authentication_states.dart';
@@ -60,7 +61,7 @@ class RegisterScreen extends StatelessWidget {
                 print(state.model.data!.token);
                 HelperFunctions.pussAndRemoveAll(
                   context,
-                  const LoginScreen(),
+                  const ShopLayout(),
                 );
               }
             }

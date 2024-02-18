@@ -30,6 +30,7 @@ class BuildDefaultTextField extends StatelessWidget {
   final TextEditingController? controller;
   final void Function(String)? onSubmitted;
   final bool autoFocus;
+  final bool isDarkWanted;
   const BuildDefaultTextField({
     super.key,
     this.numberOfFormPass,
@@ -56,6 +57,7 @@ class BuildDefaultTextField extends StatelessWidget {
     this.controller,
     this.onSubmitted,
     this.autoFocus = false,
+    this.isDarkWanted = true,
   });
 
   @override
@@ -73,14 +75,15 @@ class BuildDefaultTextField extends StatelessWidget {
           ),
         if (withText == true) SizedBox(height: 4.h),
         Material(
-          color:
-              isDark ? const Color.fromARGB(255, 92, 91, 91) : backGroundColor,
+          color: isDark && isDarkWanted
+              ? const Color.fromARGB(255, 92, 91, 91)
+              : backGroundColor,
           elevation: 1,
           shadowColor: const Color.fromARGB(255, 252, 251, 251),
           borderRadius: BorderRadius.circular(14.r),
           child: Container(
             decoration: BoxDecoration(
-              color: isDark
+              color: isDark && isDarkWanted
                   ? const Color.fromARGB(255, 92, 91, 91)
                   : backGroundColor,
               borderRadius: BorderRadius.circular(14.r),
@@ -97,7 +100,8 @@ class BuildDefaultTextField extends StatelessWidget {
                 maxLines: maxLines ?? 1,
                 style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: isDark ? Colors.white : Colors.black),
+                    color:
+                        isDark && isDarkWanted ? Colors.white : Colors.black),
                 obscureText: isObscured,
                 keyboardType: inputType,
                 decoration: InputDecoration(
@@ -106,7 +110,7 @@ class BuildDefaultTextField extends StatelessWidget {
                   //   color:
                   //       isDark ? blackColor.withOpacity(0.3) : backGroundColor,
                   // ),
-                  prefixIconColor: isDark
+                  prefixIconColor: isDark && isDarkWanted
                       ? Colors.deepOrange
                       : Theme.of(context).colorScheme.primary,
                   suffixIconColor: isDark
@@ -118,12 +122,12 @@ class BuildDefaultTextField extends StatelessWidget {
                       .titleSmall!
                       .copyWith(color: Colors.red),
                   filled: true,
-                  fillColor: isDark
+                  fillColor: isDark && isDarkWanted
                       ? const Color.fromARGB(255, 92, 91, 91)
                       : backGroundColor,
                   hintText: hintText,
                   hintStyle: const TextStyle().copyWith(
-                      color: isDark
+                      color: isDark && isDarkWanted
                           ? const Color.fromARGB(255, 151, 146, 146)
                           : Colors.black26,
                       fontSize: 14),

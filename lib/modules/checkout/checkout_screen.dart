@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import '../../shared/components/toast_message.dart';
 import '../../shared/styles/colors.dart';
 import '../cart/cart_item.dart';
 import '/controller/addresses/addresses_cubit.dart';
@@ -17,7 +18,6 @@ import '/modules/success/success_screen.dart';
 import '/shared/components/back_button.dart';
 import '/shared/components/default_button_in_app.dart';
 import '/shared/components/divider_line.dart';
-import '/shared/components/toast_message.dart';
 import '/shared/helper_functions.dart';
 
 class CheckoutScreen extends StatelessWidget {
@@ -32,10 +32,12 @@ class CheckoutScreen extends StatelessWidget {
 
     return BlocConsumer<CartCubit, CartStates>(
       listener: (context, state) {
+        // if the order was added successfully then go to the success page
         if (state is AddOrderSuccessState) {
           Navigator.pop(context);
           HelperFunctions.pushScreen(context, const SuccessScreen());
         }
+        // if the promoCode entered is wrong then show a toast message
         if (state is ValidatePromoCodeFailure) {
           buildToastMessage(
               message: state.errorMessage,
@@ -92,19 +94,21 @@ class CheckoutScreen extends StatelessWidget {
                           Flexible(
                             child: TextFormField(
                               onFieldSubmitted: (value) {
+                                // validate only if there is a value
                                 if (value.trim().isNotEmpty) {
                                   cubit.validatePromoCode(cubit.code);
                                 }
                               },
                               keyboardType: TextInputType.number,
                               onSaved: (value) {
+                                // save only if there is a value
                                 if (value != null) {
                                   cubit.changeCode(value.trim());
                                 }
                               },
                               onChanged: (value) {
+                                // save the value to toggle the the validate button status where enabled or disablem if the field is empty
                                 cubit.changeCode(value.trim());
-                                // print(cubit.code);
                               },
                               style: Theme.of(context)
                                   .textTheme
@@ -174,14 +178,29 @@ class CheckoutScreen extends StatelessWidget {
                           builder: (context, state) => BuildDefaultButton(
                             context: context,
                             onTap: () {
-                              cubit.addOrder(
-                                paymentMethod:
-                                    cubit.chosenPaymentIndex == 3 ? 1 : 2,
-                                addressId: 3953,
-                                // AddressesCubit.get(context).chosenAddressId!,
-                              );
-                              // HelperFunctions.pushScreen(
-                              //     context, const CheckoutScreen());
+                              // if he chose to pay cash the order will be added to the database and the he will be directed to the success page
+                              // but if he chose online payment he will pay the order via stripe first and then the normal flow will continue
+                              if (cubit.chosenPaymentIndex == 0) {
+                                cubit.makePayment(
+                                  (cubit.getTotal(
+                                              cubit.cartModel!.data.cartItems) +
+                                          69.7)
+                                      .round(),
+                                  'USD',
+                                  context,
+                                  paymentMethod:
+                                      cubit.chosenPaymentIndex == 1 ? 1 : 2,
+                                  addressId: AddressesCubit.get(context)
+                                      .chosenAddressId!,
+                                );
+                              } else {
+                                cubit.addOrder(
+                                  paymentMethod:
+                                      cubit.chosenPaymentIndex == 1 ? 1 : 2,
+                                  addressId: AddressesCubit.get(context)
+                                      .chosenAddressId!,
+                                );
+                              }
                             },
                             text:
                                 '${locale.checkout} ${(cubit.getTotal(cubit.cartModel!.data.cartItems) + 69.7).toStringAsFixed(1)}',

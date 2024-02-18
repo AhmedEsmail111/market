@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:restart_app/restart_app.dart';
 
 import '../../controller/language/language_cubit.dart';
 import '../../controller/language/language_states.dart';
@@ -28,6 +27,9 @@ class ChangeLanguageScreen extends StatelessWidget {
 
         return PopScope(
           onPopInvoked: (_) async {
+            // adjust the values of the two variables according to the shared preference because the user could choose
+            // english but does not press apply and that case there will be conflict between the live data and the data stored
+
             languageCubit.arabicStatus =
                 CacheHelper.getData(key: AppConstants.languageKey) == 'ar'
                     ? true
@@ -83,8 +85,12 @@ class ChangeLanguageScreen extends StatelessWidget {
                   const Spacer(),
                   BuildDefaultButton(
                     onTap: () {
+                      // when he press apply, will save the new locale to the data base
+                      //and will restart the app again with the new locale
+
+                      // the saved data is deleted(products, banners,categories) so that the app makes an api call
+                      //and gets the data with the new chosen language
                       languageCubit.setDefaultLanguage();
-                      Restart.restartApp();
                     },
                     text: locale.save_changes,
                     color: Theme.of(context).colorScheme.primary,

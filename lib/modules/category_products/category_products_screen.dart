@@ -7,6 +7,7 @@ import 'package:shop_app/shared/components/back_button.dart';
 
 import '../../shared/components/product_tile.dart';
 
+// show the products of each category after fetching them using the category id
 class CategoryProductsScreen extends StatelessWidget {
   final String category;
   final int categoryId;

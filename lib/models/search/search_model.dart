@@ -50,7 +50,8 @@ class SearchData {
   factory SearchData.fromJson(Map<String, dynamic> json) => SearchData(
         currentPage: json["current_page"] ?? 1,
         productData: json["data"] != null
-            ? List<Product>.from(json["data"].map((x) => Product.fromJson(x)))
+            ? List<Product>.from(
+                json["data"].map((product) => Product.fromJson(product)))
             : [],
         // firstPageUrl: json["first_page_url"],
         // from: json["from"],

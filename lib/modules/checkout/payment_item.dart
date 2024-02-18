@@ -23,6 +23,8 @@ class BuildPaymentItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).bottomNavigationBarTheme.backgroundColor ==
         AppColors.darKBackground;
+
+    // a payment method option
     return GestureDetector(
       onTap: onTap,
       child: Stack(

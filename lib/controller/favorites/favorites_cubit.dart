@@ -1,8 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shop_app/controller/favorites/favorites_states.dart';
 
 import '../../models/change_favorite/change_favorite_model.dart';
 import '../../models/favorites/favorites_model.dart';
+import '../../shared/components/toast_message.dart';
 import '../../shared/constants/api_constant.dart';
 import '../../shared/constants/constants.dart';
 import '../../shared/network/local/shared_preference.dart';
@@ -32,9 +35,12 @@ class FavoritesCubit extends Cubit<FavoritesStates> {
   //   TLocaleStorage.instance().saveData('favorites', encodedFavorites);
   //   print('savedSuccessfully');
   // }
+
   FavoritesModel? favoritesModel;
+  // a map to manage favorites locally
   Map<int, bool> favorites = {};
   bool isFavorite(int productId) => favorites.containsKey(productId);
+  // get all favorites
   void getFavorites({bool isFirst = true}) async {
     try {
       final userToken = CacheHelper.getData(key: AppConstants.token);
@@ -48,6 +54,7 @@ class FavoritesCubit extends Cubit<FavoritesStates> {
 
       if (response.data['status'] == true) {
         favoritesModel = FavoritesModel.fromJson(response.data);
+        // the first time the app starts add favorites to the favorites map
         if (isFirst) {
           favorites = {};
           for (final item in favoritesModel!.data) {
@@ -69,19 +76,17 @@ class FavoritesCubit extends Cubit<FavoritesStates> {
   }
 
   ChangeFavoriteModel? changeFavoriteModel;
-  // bool isChangeFavDone = true;
+  // change the favorite status of a given products
   void changeFavoriteStatus(int productId, bool status) async {
     if (status) {
+      // if the status was true then unfav the product
       favorites.remove(productId);
-      // TLocaleStorage.instance().removeData(productId.toString());
-      // saveFavoritesToStorage();
+
+      // else if the status was false then make the the product favorite
     } else {
       favorites.addAll({productId: true});
-
-      // saveFavoritesToStorage();
     }
-    // isChangeFavDone = false;
-    // favorites[productId] = !favorites[productId]!;
+    ;
     emit(ChangeFaveLocalState());
 
     try {
@@ -96,54 +101,42 @@ class FavoritesCubit extends Cubit<FavoritesStates> {
       );
 
       changeFavoriteModel = ChangeFavoriteModel.fromJson(response.data);
+
+      // if the call to the server was made successfully then make another call to get the latest favorites
       if (changeFavoriteModel!.status == true) {
         getFavorites(isFirst: false);
-        // isChangeFavDone = true;
         emit(ChangeFaveSuccessState());
-      } else {
-        // if (status) {
-        //   favorites.addAll({productId: true});
-        // } else {
-        //   favorites.remove(productId);
-        // }
 
+        // else return the product locally to its previous status and show a toast message
+      } else {
         if (status) {
           favorites.addAll({productId: true});
-
-          // saveFavoritesToStorage();
         } else {
           favorites.remove(productId);
-          // TLocaleStorage.instance().removeData(productId.toString());
-          // saveFavoritesToStorage();
         }
         emit(ChangeFaveFailureState());
-        // buildToastMessage(
-        //   message: 'Something went wrong!',
-        //   gravity: ToastGravity.CENTER,
-        //   textColor: Colors.white,
-        //   background: const Color.fromARGB(255, 173, 16, 4).withOpacity(0.8),
-        // );
+        buildToastMessage(
+          message: 'Something went wrong!',
+          gravity: ToastGravity.CENTER,
+          textColor: Colors.white,
+          background: const Color.fromARGB(255, 173, 16, 4).withOpacity(0.8),
+        );
       }
     } catch (error) {
       print(error.toString());
 
-      // isChangeFavDone = true;
       if (status) {
         favorites.addAll({productId: true});
-
-        // saveFavoritesToStorage();
       } else {
         favorites.remove(productId);
-        // TLocaleStorage.instance().removeData(productId.toString());
-        // saveFavoritesToStorage();
       }
       emit(ChangeFaveFailureState());
-      // buildToastMessage(
-      //   message: 'Something went wrong!',
-      //   gravity: ToastGravity.BOTTOM,
-      //   textColor: Colors.white,
-      //   background: const Color.fromARGB(255, 173, 16, 4).withOpacity(0.8),
-      // );
+      buildToastMessage(
+        message: 'Something went wrong!',
+        gravity: ToastGravity.BOTTOM,
+        textColor: Colors.white,
+        background: const Color.fromARGB(255, 173, 16, 4).withOpacity(0.8),
+      );
     }
   }
 }

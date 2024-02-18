@@ -12,6 +12,8 @@ class BuildBillingSection extends StatelessWidget {
 
     const shippingFee = 45;
     const taxFee = 24.7;
+
+    // some details about the order (subTotal, shipping fee, tax ,total )
     return Column(
       children: [
         Row(

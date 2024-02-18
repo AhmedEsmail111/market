@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:shop_app/controller/language/language_cubit.dart';
 import 'package:shop_app/controller/language/language_states.dart';
+import 'package:shop_app/shared/network/local/local_database.dart';
 import 'package:shop_app/shared/styles/colors.dart';
 
 import '/bloc_observer.dart';
@@ -23,10 +25,11 @@ import 'l10n/l10n.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Stripe.publishableKey = AppConstants.publishableKey;
   Bloc.observer = MyBlocObserver();
   DioHelper.init();
   await CacheHelper.init();
-  // await GetStorage.init();
+  await LocalDatabase.createDatabase();
 
   runApp(const MyApp());
 }
@@ -46,9 +49,7 @@ class MyApp extends StatelessWidget {
           create: (ctx) => AddressesCubit()..getAddresses(),
         ),
         BlocProvider(
-          create: (context) => HomeCubit()
-            ..getHomeData()
-            ..getCategoriesData(),
+          create: (context) => HomeCubit()..setData(),
         ),
         BlocProvider(
           create: (context) => CartCubit()..getOrders(),

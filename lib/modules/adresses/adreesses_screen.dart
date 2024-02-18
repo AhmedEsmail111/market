@@ -24,30 +24,61 @@ class AddressesScreen extends StatelessWidget {
               leading: const BuildBackButton(),
               title: Text(locale.addresses),
             ),
-            body: cubit.addressesModel != null
-                ? ListView.separated(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    itemBuilder: (ctx, index) => BuildAddressesItem(
-                          address: cubit.addressesModel!.data[index],
-                          onLongPress: () {
-                            cubit.changeAddressId(
-                                cubit.addressesModel!.data[index].id);
-                          },
-                          onTap: () {
-                            HelperFunctions.pushScreen(
-                                context,
-                                AddNewAddressScreen(
-                                  address: cubit.addressesModel!.data[index],
-                                ));
-                          },
+            body: SingleChildScrollView(
+              child: Column(
+                children: [
+                  // if the address model is not null show the data
+                  if (cubit.addressesModel != null)
+                    ListView.separated(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      itemBuilder: (ctx, index) => BuildAddressesItem(
+                        address: cubit.addressesModel!.data[index],
+                        onLongPress: () {
+                          cubit.changeAddressId(
+                              cubit.addressesModel!.data[index].id);
+                        },
+                        onTap: () {
+                          HelperFunctions.pushScreen(
+                              context,
+                              AddNewAddressScreen(
+                                address: cubit.addressesModel!.data[index],
+                              ));
+                        },
+                      ),
+                      separatorBuilder: (_, __) => SizedBox(
+                        height: 12.h,
+                      ),
+                      itemCount: cubit.addressesModel!.data.length,
+                    ),
+
+                  //  else show a circular progressIndicator
+                  if (cubit.addressesModel == null)
+                    Container(
+                      height: MediaQuery.of(context).size.height / 1.4,
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      child: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
+
+                  //  if no addresses yet show a text
+                  if (cubit.addressesModel != null &&
+                      cubit.addressesModel!.data.isEmpty)
+                    Container(
+                      height: MediaQuery.of(context).size.height / 1.4,
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      child: Center(
+                        child: Text(
+                          'Looks like you have no addresses yet!, lets add one',
+                          style: Theme.of(context).textTheme.bodyLarge,
                         ),
-                    separatorBuilder: (_, __) => SizedBox(
-                          height: 12.h,
-                        ),
-                    itemCount: cubit.addressesModel!.data.length)
-                : const Center(
-                    child: CircularProgressIndicator(),
-                  ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
             floatingActionButton: FloatingActionButton(
               onPressed: () {
                 HelperFunctions.pushScreen(

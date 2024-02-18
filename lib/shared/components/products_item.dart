@@ -12,14 +12,10 @@ import 'package:shop_app/shared/styles/colors.dart';
 
 class BuildProductsItem extends StatelessWidget {
   final Product product;
-  final int index;
-  final void Function() onTap;
 
   const BuildProductsItem({
     super.key,
     required this.product,
-    required this.onTap,
-    required this.index,
   });
 
   @override

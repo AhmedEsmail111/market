@@ -7,7 +7,7 @@ import 'package:shop_app/shared/helper_functions.dart';
 import '../../shared/components/image_placeholder.dart';
 
 class BuildCategoryStackItem extends StatelessWidget {
-  final Data model;
+  final Category model;
   const BuildCategoryStackItem({super.key, required this.model});
   @override
   Widget build(BuildContext context) {

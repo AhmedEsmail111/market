@@ -17,3 +17,7 @@ class GetCategoriesDataSuccessState extends HomeStates {}
 class GetCategoriesDataFailureState extends HomeStates {}
 
 class GetCategoriesDataLoadingState extends HomeStates {}
+
+class GetDataLocallySuccessState extends HomeStates {}
+
+class GetDataLoadingState extends HomeStates {}

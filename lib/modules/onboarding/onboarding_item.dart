@@ -20,23 +20,18 @@ class BuildOnBoardingItem extends StatelessWidget {
             width: double.infinity,
             height: MediaQuery.of(context).size.height / 2.4,
             fit: BoxFit.cover,
+            filterQuality: FilterQuality.high,
           ),
         ),
         const SizedBox(height: 32),
         Text(
           model.title,
-          style: const TextStyle().copyWith(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
+          style: Theme.of(context).textTheme.bodyLarge,
         ),
         const SizedBox(height: 8),
         Text(
           model.body,
-          style: const TextStyle().copyWith(
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-          ),
+          style: Theme.of(context).textTheme.bodyMedium,
         ),
         const SizedBox(height: 16),
       ],

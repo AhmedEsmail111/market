@@ -1,8 +1,10 @@
 import 'dart:ui';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:restart_app/restart_app.dart';
 
 import '../../shared/constants/constants.dart';
+import '../../shared/network/local/local_database.dart';
 import '../../shared/network/local/shared_preference.dart';
 import '/controller/language/language_states.dart';
 
@@ -37,11 +39,19 @@ class ShopCubit extends Cubit<ShopStates> {
         CacheHelper.getData(key: AppConstants.languageKey) != 'en') {
       await CacheHelper.saveData(key: AppConstants.languageKey, value: 'en');
       locale = const Locale('en');
+
+      // the saved data is deleted(products, banners,categories) so that the app makes an api call
+      //and gets the data with the new chosen language
+      LocalDatabase.deleteAllData().then((value) => Restart.restartApp());
     }
     if (index == 1 &&
         CacheHelper.getData(key: AppConstants.languageKey) != 'ar') {
       await CacheHelper.saveData(key: AppConstants.languageKey, value: 'ar');
       locale = const Locale('ar');
+
+      // the saved data is deleted(products, banners,categories) so that the app makes an api call
+      //and gets the data with the new chosen language
+      LocalDatabase.deleteAllData().then((value) => Restart.restartApp());
     }
     emit(SaveDefaultLanguageStatus());
   }

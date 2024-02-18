@@ -31,6 +31,7 @@ class AddNewAddressScreen extends StatelessWidget {
     var enteredNotes = '';
     return BlocConsumer<AddressesCubit, AddressesStates>(
         listener: (context, state) {
+      // if the address was added successfully show a toast message
       if (state is AddAddressSuccessState) {
         buildToastMessage(
           message: locale.success_address,
@@ -40,6 +41,7 @@ class AddNewAddressScreen extends StatelessWidget {
         );
         Navigator.pop(context);
       }
+      // if the address was updated successfully show a toast message
       if (state is UpdateAddressSuccessState) {
         buildToastMessage(
           message: locale.update_address,
@@ -92,6 +94,7 @@ class AddNewAddressScreen extends StatelessWidget {
                       height: 8.h,
                     ),
                     BuildDefaultTextField(
+                      // add 0 before the num because the field in the data base was not made for phone numbers
                       initialFieldValue: address != null
                           ? '0${address!.phone.toStringAsFixed(0)}'
                           : "",
@@ -254,14 +257,9 @@ class AddNewAddressScreen extends StatelessWidget {
                           )
                         : BuildDefaultButton(
                             onTap: () {
+                              // update the address if there is an existing one
                               if (formKey.currentState!.validate()) {
                                 formKey.currentState!.save();
-
-                                // print(enteredName);
-                                // print(enteredPhone);
-                                // print(enteredNotes);
-                                // print(enteredCity);
-                                // print(enteredRegion);
                                 if (address != null) {
                                   cubit.updateAddress(
                                       name: enteredName,
@@ -271,7 +269,9 @@ class AddNewAddressScreen extends StatelessWidget {
                                       city: enteredCity,
                                       notes: enteredNotes,
                                       addressId: address!.id);
-                                } else {
+                                }
+                                //  else add a new one
+                                else {
                                   cubit.addAddress(
                                     name: enteredName,
                                     region: enteredRegion,

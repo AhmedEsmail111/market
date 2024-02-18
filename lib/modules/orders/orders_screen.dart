@@ -78,7 +78,8 @@ class OrdersScreen extends StatelessWidget {
                         ),
                   if (cubit.ordersModel != null &&
                       cubit.ordersModel!.data.orders.isEmpty)
-                    SizedBox(
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
                       height: MediaQuery.of(context).size.height / 2,
                       child: Center(
                         child: Text(

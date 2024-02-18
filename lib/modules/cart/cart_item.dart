@@ -77,6 +77,8 @@ class BuildCartItem extends StatelessWidget {
                               Positioned(
                                 top: 0,
                                 right: 0,
+
+                                //  the discount percent for a given item
                                 child: BuildDiscountPercent(
                                     text:
                                         '- ${(((item.product.price - item.product.oldPrice!) / item.product.oldPrice!) * 100).toStringAsFixed(2).substring(1)}%'),
@@ -134,6 +136,134 @@ class BuildCartItem extends StatelessWidget {
                             width: 200.w,
                             child: Row(
                               children: [
+                                // if show action is true which mean we use it in the cart screen
+                                //else it means we use it in the checkout screen
+                                if (showActions)
+                                  Expanded(
+                                    child: Row(
+                                      children: [
+                                        IconButton(
+                                          style: IconButton.styleFrom(
+                                            // unite the look and feel of the icon button
+                                            disabledBackgroundColor: isDark
+                                                ? Colors.grey
+                                                : Theme.of(context)
+                                                    .colorScheme
+                                                    .secondary
+                                                    .withOpacity(0.2),
+                                            backgroundColor: isDark
+                                                ? Colors.grey
+                                                : Theme.of(context)
+                                                    .colorScheme
+                                                    .secondary
+                                                    .withOpacity(0.2),
+                                          ),
+                                          color: Colors.white,
+                                          onPressed:
+                                              // if we are still changing another item , then disable the button
+                                              state is ChangeQuantityInCartLoading
+                                                  ? null
+                                                  : () {
+                                                      // if the item count is zero show a dialogue to the user and
+                                                      //if agreed delete it from database
+                                                      cubit.cartMap[item.id]! -
+                                                                  1 ==
+                                                              0
+                                                          ? buildDialogue(
+                                                              context: context,
+                                                              title: locale
+                                                                  .remove_title,
+                                                              message: locale
+                                                                  .remove_message,
+                                                              doText:
+                                                                  locale.delete,
+                                                              undoText:
+                                                                  locale.cancel,
+                                                              onDelete: () {
+                                                                cubit.removeItem(
+                                                                    item.id);
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop();
+                                                              },
+                                                            )
+                                                          // else reduce the quantity by one
+                                                          : cubit.changeQuantity(
+                                                              itemId: item.id,
+                                                              quantity: (cubit
+                                                                          .cartMap[
+                                                                      item.id]! -
+                                                                  1));
+                                                    },
+                                          icon: Icon(
+                                            Iconsax.minus_copy,
+                                            size: 18.w,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .secondary,
+                                          ),
+                                        ),
+                                        SizedBox(width: 4.w),
+                                        Text(
+                                          cubit.cartMap[item.id].toString(),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium,
+                                        ),
+                                        SizedBox(width: 4.w),
+                                        IconButton(
+                                          style: IconButton.styleFrom(
+                                              // unite the look and feel of the icon button
+                                              foregroundColor: Colors.white,
+                                              disabledForegroundColor:
+                                                  Colors.white,
+                                              disabledBackgroundColor:
+                                                  Theme.of(context)
+                                                      .colorScheme
+                                                      .primary
+                                                      .withOpacity(0.8),
+                                              backgroundColor: Theme.of(context)
+                                                  .colorScheme
+                                                  .primary
+                                                  .withOpacity(0.8)),
+                                          color: Colors.white,
+                                          onPressed:
+                                              // if we are still changing another item , then disable the button
+                                              state is ChangeQuantityInCartLoading
+                                                  ? null
+                                                  : () {
+                                                      // increase the quantity by one
+                                                      cubit.changeQuantity(
+                                                          itemId: item.id,
+                                                          quantity: (cubit
+                                                                      .cartMap[
+                                                                  item.id]! +
+                                                              1));
+                                                    },
+                                          icon: Icon(
+                                            Iconsax.add_copy,
+                                            size: 18.w,
+                                          ),
+                                        ),
+                                        const Spacer(),
+                                        //  total price of the item taking into the account its quantity
+                                        Text(
+                                          cubit.cartMap[item.id]! == 1
+                                              ? '${item.product.price.toStringAsFixed(1)}\$'
+                                              : '${(item.product.price * cubit.cartMap[item.id]!).toStringAsFixed(1)}\$',
+                                          maxLines: 2,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium!
+                                              .copyWith(
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                //  some data to show instead of the the plus and minus buttons
+                                // in case we use it in checkout screen
                                 if (!showActions)
                                   Expanded(
                                     child: Row(
@@ -180,145 +310,6 @@ class BuildCartItem extends StatelessWidget {
                                       ],
                                     ),
                                   ),
-                                if (showActions)
-                                  Expanded(
-                                    child: Row(
-                                      children: [
-                                        IconButton(
-                                          style: IconButton.styleFrom(
-                                            disabledBackgroundColor: isDark
-                                                ? Colors.grey
-                                                : Theme.of(context)
-                                                    .colorScheme
-                                                    .secondary
-                                                    .withOpacity(0.2),
-                                            backgroundColor: isDark
-                                                ? Colors.grey
-                                                : Theme.of(context)
-                                                    .colorScheme
-                                                    .secondary
-                                                    .withOpacity(0.2),
-                                          ),
-                                          color: Colors.white,
-                                          onPressed: state
-                                                  is ChangeQuantityInCartLoading
-                                              ? null
-                                              : () {
-                                                  cubit.cartMap[item.id]! - 1 ==
-                                                          0
-                                                      ? buildDialogue(
-                                                          context: context,
-                                                          title: locale
-                                                              .remove_title,
-                                                          message: locale
-                                                              .remove_message,
-                                                          doText: locale.delete,
-                                                          undoText:
-                                                              locale.cancel,
-                                                          onDelete: () {
-                                                            cubit.removeItem(
-                                                                item.id);
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pop();
-                                                          },
-                                                        )
-                                                      : cubit.changeQuantity(
-                                                          itemId: item.id,
-                                                          quantity: (cubit
-                                                                      .cartMap[
-                                                                  item.id]! -
-                                                              1));
-                                                },
-                                          icon: Icon(
-                                            Iconsax.minus_copy,
-                                            size: 18.w,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .secondary,
-                                          ),
-                                        ),
-                                        SizedBox(width: 4.w),
-                                        Text(
-                                          // cubit.itemsNumber.toString(),
-                                          cubit.cartMap[item.id].toString(),
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyMedium,
-                                        ),
-                                        SizedBox(width: 4.w),
-                                        IconButton(
-                                          style: IconButton.styleFrom(
-                                              foregroundColor: Colors.white,
-                                              disabledForegroundColor:
-                                                  Colors.white,
-                                              disabledBackgroundColor:
-                                                  Theme.of(context)
-                                                      .colorScheme
-                                                      .primary
-                                                      .withOpacity(0.8),
-                                              backgroundColor: Theme.of(context)
-                                                  .colorScheme
-                                                  .primary
-                                                  .withOpacity(0.8)),
-                                          color: Colors.white,
-                                          onPressed: state
-                                                  is ChangeQuantityInCartLoading
-                                              ? null
-                                              : () {
-                                                  cubit.changeQuantity(
-                                                      itemId: item.id,
-                                                      quantity: (cubit.cartMap[
-                                                              item.id]! +
-                                                          1));
-                                                },
-                                          icon: Icon(
-                                            Iconsax.add_copy,
-                                            size: 18.w,
-                                          ),
-                                        ),
-                                        const Spacer(),
-                                        Text(
-                                          cubit.cartMap[item.id]! == 1
-                                              ? '${item.product.price.toStringAsFixed(1)}\$'
-                                              : '${(item.product.price * cubit.cartMap[item.id]!).toStringAsFixed(1)}\$',
-                                          maxLines: 2,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyMedium!
-                                              .copyWith(
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                        ),
-                                        // SizedBox(width: 4.w),
-                                        // IconButton(
-                                        //   style: IconButton.styleFrom(
-                                        //       backgroundColor: Theme.of(context)
-                                        //           .colorScheme
-                                        //           .error),
-                                        //   color: Theme.of(context)
-                                        //       .colorScheme
-                                        //       .onError,
-                                        //   onPressed: () {
-                                        //     buildDialogue(
-                                        //       context: context,
-                                        //       title: 'Remove Product',
-                                        //       message:
-                                        //           'Are you sure you want to remove this Item?',
-                                        //       onDelete: () {
-                                        //         cubit.removeItem(item.id);
-                                        //         Navigator.of(context).pop();
-                                        //       },
-                                        //     );
-                                        //     // cubit.removeItem(item.id);
-                                        //   },
-                                        //   icon: const Icon(
-                                        //     Iconsax.shop_remove_copy,
-                                        //   ),
-                                        // ),
-                                      ],
-                                    ),
-                                  )
                               ],
                             ),
                           ),

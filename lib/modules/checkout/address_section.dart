@@ -36,6 +36,7 @@ class BuildAddressSection extends StatelessWidget {
                 TextButton(
                   onPressed: () {
                     scaffoldKey.currentState!.showBottomSheet(
+                      // a modal bottom shhet for the user to choose an address from  or if he wants to change the chosen one
                       (context) => Container(
                         decoration: BoxDecoration(
                           color: isDark
@@ -76,6 +77,7 @@ class BuildAddressSection extends StatelessWidget {
                                 itemCount:
                                     cubit.addressesModel!.data.length + 1,
                                 itemBuilder: ((context, index) {
+                                  // add a button at the end of the list if the user wanna add a new address
                                   if (index ==
                                       cubit.addressesModel!.data.length) {
                                     return Padding(
@@ -92,6 +94,7 @@ class BuildAddressSection extends StatelessWidget {
                                   }
                                   return BuildAddressesItem(
                                     onTap: () {
+                                      // change the chosen address id to be able to show to the user the address he has just chosen
                                       cubit.changeAddressId(
                                           cubit.addressesModel!.data[index].id);
                                       Navigator.pop(context);
@@ -120,6 +123,7 @@ class BuildAddressSection extends StatelessWidget {
                 ),
               ],
             ),
+            // only if we have a chosen address id and the address model is not null, we show the user shipping address
             cubit.chosenAddressId != null
                 ? cubit.addressesModel != null
                     ? BuildAddressesItem(
