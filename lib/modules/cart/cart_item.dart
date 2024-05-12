@@ -79,9 +79,12 @@ class BuildCartItem extends StatelessWidget {
                                 right: 0,
 
                                 //  the discount percent for a given item
-                                child: BuildDiscountPercent(
-                                    text:
-                                        '- ${(((item.product.price - item.product.oldPrice!) / item.product.oldPrice!) * 100).toStringAsFixed(2).substring(1)}%'),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 3),
+                                  child: BuildDiscountPercent(
+                                      text:
+                                          '- ${(((item.product.price - item.product.oldPrice!) / item.product.oldPrice!) * 100).toStringAsFixed(2).substring(1)}%'),
+                                ),
                               ),
                           ],
                         ),

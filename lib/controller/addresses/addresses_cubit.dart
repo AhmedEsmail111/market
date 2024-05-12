@@ -126,7 +126,7 @@ class AddressesCubit extends Cubit<AddressesStates> {
     }
   }
 
-  int? chosenAddressId = CacheHelper.getData(key: AppConstants.addressId);
+  int? chosenAddressId;
   void changeAddressId(int newId) {
     chosenAddressId = newId;
 
