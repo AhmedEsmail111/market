@@ -22,7 +22,7 @@ class NewPasswordScreen extends StatelessWidget {
 
     final locale = AppLocalizations.of(context)!;
     double w = MediaQuery.sizeOf(context).width;
-    double h = MediaQuery.sizeOf(context).height;
+
     var formKey = GlobalKey<FormState>();
     // var passwordController = TextEditingController();
     // var confirmPasswordController = TextEditingController();

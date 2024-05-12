@@ -42,6 +42,7 @@ class AddressesCubit extends Cubit<AddressesStates> {
 
       if (response.data['status'] == true) {
         await getAddresses();
+        changeAddressId(addressesModel!.data.first.id);
         isAddingAddress = false;
         emit(AddAddressSuccessState());
       } else {
@@ -128,6 +129,8 @@ class AddressesCubit extends Cubit<AddressesStates> {
   int? chosenAddressId = CacheHelper.getData(key: AppConstants.addressId);
   void changeAddressId(int newId) {
     chosenAddressId = newId;
+
+    print('new id is $newId');
 
     CacheHelper.saveData(key: AppConstants.addressId, value: newId);
     emit(ChangeChosenAddressId());

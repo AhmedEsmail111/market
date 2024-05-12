@@ -19,10 +19,11 @@ class BuildAddressSection extends StatelessWidget {
     final isDark = Theme.of(context).bottomNavigationBarTheme.backgroundColor ==
         AppColors.darKBackground;
     final locale = AppLocalizations.of(context)!;
-    return BlocConsumer<AddressesCubit, AddressesStates>(
-      listener: (context, state) {},
+    return BlocBuilder<AddressesCubit, AddressesStates>(
       builder: (context, state) {
         final cubit = AddressesCubit.get(context);
+        print(cubit.addressesModel!.data.length);
+        print(cubit.chosenAddressId);
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -124,14 +125,14 @@ class BuildAddressSection extends StatelessWidget {
               ],
             ),
             // only if we have a chosen address id and the address model is not null, we show the user shipping address
-            cubit.chosenAddressId != null
-                ? cubit.addressesModel != null
-                    ? BuildAddressesItem(
-                        withColor: false,
-                        address: cubit.addressesModel!.data.firstWhere(
-                            (element) => element.id == cubit.chosenAddressId))
-                    : const Text('Select Address')
-                : const Text(''),
+            cubit.chosenAddressId != null &&
+                    cubit.addressesModel != null &&
+                    cubit.addressesModel!.data.isNotEmpty
+                ? BuildAddressesItem(
+                    withColor: false,
+                    address: cubit.addressesModel!.data.firstWhere(
+                        (element) => element.id == cubit.chosenAddressId))
+                : const Text('Select Address'),
           ],
         );
       },

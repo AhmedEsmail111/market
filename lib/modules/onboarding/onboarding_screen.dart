@@ -5,7 +5,6 @@ import 'package:shop_app/modules/onboarding/onboarding_item.dart';
 import 'package:shop_app/shared/constants/constants.dart';
 import 'package:shop_app/shared/helper_functions.dart';
 import 'package:shop_app/shared/network/local/shared_preference.dart';
-import 'package:shop_app/shared/styles/colors.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnBoardingScreen extends StatefulWidget {
@@ -41,8 +40,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).bottomNavigationBarTheme.backgroundColor ==
-        AppColors.darKBackground;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(

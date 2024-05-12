@@ -100,7 +100,7 @@ class CartScreen extends StatelessWidget {
                                   context, const CheckoutScreen());
                             },
                             text: cubit.cartModel != null
-                                ? '${locale.checkout} ${cubit.getTotal(cubit.cartModel!.data.cartItems).toStringAsFixed(1)}'
+                                ? '${locale.checkout} ${cubit.getTotal(cubit.cartModel!.data.cartItems).toStringAsFixed(1)}\$'
                                 : locale.checkout,
                             elevation: 4,
                           ),

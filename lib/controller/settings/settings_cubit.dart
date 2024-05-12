@@ -15,6 +15,7 @@ class SettingsCubit extends Cubit<SettingsStates> {
 // logout by removing the cached token and directing the user to the login page
   void logout(context) async {
     CacheHelper.removeData(key: AppConstants.token);
+    CacheHelper.removeData(key: AppConstants.addressId);
     Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(

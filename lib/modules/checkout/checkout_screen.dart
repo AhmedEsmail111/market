@@ -178,6 +178,22 @@ class CheckoutScreen extends StatelessWidget {
                           builder: (context, state) => BuildDefaultButton(
                             context: context,
                             onTap: () {
+                              final addressCubit = AddressesCubit.get(context);
+                              // if no address is hosen we ask the user to choose one
+                              if (addressCubit.addressesModel == null ||
+                                  addressCubit.chosenAddressId == null ||
+                                  addressCubit.addressesModel!.data.isEmpty) {
+                                buildToastMessage(
+                                  message:
+                                      'Please choose a shipping address to continue!',
+                                  gravity: ToastGravity.CENTER,
+                                  textColor:
+                                      Theme.of(context).colorScheme.onError,
+                                  background:
+                                      Theme.of(context).colorScheme.error,
+                                );
+                                return;
+                              }
                               // if he chose to pay cash the order will be added to the database and the he will be directed to the success page
                               // but if he chose online payment he will pay the order via stripe first and then the normal flow will continue
                               if (cubit.chosenPaymentIndex == 0) {
@@ -190,20 +206,18 @@ class CheckoutScreen extends StatelessWidget {
                                   context,
                                   paymentMethod:
                                       cubit.chosenPaymentIndex == 1 ? 1 : 2,
-                                  addressId: AddressesCubit.get(context)
-                                      .chosenAddressId!,
+                                  addressId: addressCubit.chosenAddressId!,
                                 );
                               } else {
                                 cubit.addOrder(
                                   paymentMethod:
                                       cubit.chosenPaymentIndex == 1 ? 1 : 2,
-                                  addressId: AddressesCubit.get(context)
-                                      .chosenAddressId!,
+                                  addressId: addressCubit.chosenAddressId!,
                                 );
                               }
                             },
                             text:
-                                '${locale.checkout} ${(cubit.getTotal(cubit.cartModel!.data.cartItems) + 69.7).toStringAsFixed(1)}',
+                                '${locale.checkout} ${(cubit.getTotal(cubit.cartModel!.data.cartItems) + 69.7).toStringAsFixed(1)}\$',
                             elevation: 4,
                           ),
                         )

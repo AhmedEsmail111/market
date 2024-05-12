@@ -19,6 +19,7 @@
   "remove_cart": "Remove From Cart",
   "checkout": "Checkout",
   "nothing_in_cart": "Oops, Looks like there are no items in the Cart yet...",
+  "nothing_in_favorites": "Oops, Looks like there are no items in the Wishlist yet! Lets add some...",
   "apply":"Apply",
   "have_a_promo": "Have a promo code? Paste it here!",
   "subtotal":"Subtotal",

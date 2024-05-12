@@ -9,7 +9,6 @@ import '../../models/addresses/addresses_model.dart';
 import '../../shared/components/back_button.dart';
 import '../../shared/components/default_button_in_app.dart';
 import '../../shared/components/toast_message.dart';
-import '../../shared/styles/colors.dart';
 import '/controller/addresses/addresses_cubit.dart';
 import '/controller/addresses/addresses_states.dart';
 import '/shared/components/default_text_form_in_app.dart';
@@ -19,8 +18,6 @@ class AddNewAddressScreen extends StatelessWidget {
   const AddNewAddressScreen({super.key, this.address});
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).bottomNavigationBarTheme.backgroundColor ==
-        AppColors.darKBackground;
     final locale = AppLocalizations.of(context)!;
     final formKey = GlobalKey<FormState>();
     var enteredName = '';
@@ -39,6 +36,7 @@ class AddNewAddressScreen extends StatelessWidget {
           textColor: Theme.of(context).colorScheme.onSecondary,
           background: Theme.of(context).colorScheme.secondary.withOpacity(0.6),
         );
+        Navigator.pop(context);
         Navigator.pop(context);
       }
       // if the address was updated successfully show a toast message

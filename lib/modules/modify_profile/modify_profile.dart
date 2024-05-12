@@ -23,11 +23,7 @@ class ModifyProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
-    // print(CacheHelper.getData(key: AppConstant.userGender));
-    // print(SettingsCubit.get(context).userModel!.data!.id);
-    // final locale = AppLocalizations.of(context);
-    final w = MediaQuery.of(context).size.width;
-    final h = MediaQuery.of(context).size.height;
+
     String enteredName = '';
     String enteredEmail = '';
     String enteredPhone = '';

@@ -81,6 +81,8 @@ class ReportProblemScreen extends StatelessWidget {
                                 ? 'أدخل المشكلة من فضلك'
                                 : 'please enter your Compliant';
                           }
+
+                          return null;
                         },
                         onSaved: (value) {
                           cubit.complaint = value!;
